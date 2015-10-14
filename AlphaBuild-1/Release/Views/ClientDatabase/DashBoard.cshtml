@@ -1,0 +1,251 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSummaryViewModel
+
+@{
+    ViewBag.Title = "DashBoard";
+}
+
+
+<script src="~/Scripts/Highcharts-4.0.1/js/highstock.js"></script>
+<div class="row add_mar_b_15">
+    @Html.TextBoxFor(model => model.CustomerType, new { @id = "CustomerType", @style = "display:none;" })
+    @Html.TextBoxFor(model => model.CustomerDetails.customerID, new { @id = "CustomerId", @style = "display:none;" })
+    @Html.TextBoxFor(model => model.HasTrainDetails, new { @id = "HasTrainDetails", @style = "display:none;" })
+    @Html.TextBoxFor(model => model.WaterSourceOne.agency_id, new { @id = "Source1Id", @style = "display:none" })
+    @Html.TextBoxFor(model => model.WaterSourceTwo.agency_id, new { @id = "Source2Id", @style = "display:none" })
+    <!-- Customer info-->
+    <div class="col-xs-6">
+        @if (Model != null && Model.CustomerDetails != null)
+        {
+            <div class="custinfo_panel">
+                <div class="cust_name">
+                    <div class="cust_name_trim" title="@Model.CustomerDetails.name">@Html.DisplayFor(model => model.CustomerDetails.name)</div><a href="#" id="GetCustomerDetails" data-toggle="modal" data-target="#changeCustomer">Change / Edit</a>
+                </div>
+                <div class="cust_id">
+                    <span>(</span>@for (int i = 0; i < 12 - (Model.CustomerDetails.customerID).ToString().Length; i++)
+                    {
+                        if (i == 3 || i == 7)
+                        {
+                            <span>-</span>
+                        }
+                        else
+                        {
+                            <span>0</span>
+                        }
+
+                    }<span>@Html.DisplayFor(model => model.CustomerDetails.customerID)</span><span>)</span>
+                </div>
+                <div class="plant_name">@Html.DisplayFor(model => model.CustomerDetails.plant) Plant</div>
+                <div class="cust_address">@Html.DisplayFor(model => model.CustomerDetails.city), @Html.DisplayFor(model => model.CustomerDetails.state)</div>
+            </div>
+        }
+        else
+        {
+            <div class="custinfo_panel">
+                <p class="cust_name">No Customer Information  <a href="#" id="GetCustomerDetails" data-toggle="modal" data-target="#changeCustomer">Change / Edit</a></p>
+                <p class="plant_name">You have no customer selected...<a href="#" id="GetCustomerDetails" data-toggle="modal" data-target="#changeCustomer">Update Now!</a></p>
+            </div>
+
+        }
+    </div>
+
+    <!-- System summary-->
+    <div class="col-xs-6">
+
+        <div class="syssummary_panel">
+            @if (Model != null && Model.CustomerDetails != null)
+            {
+                <div class="btn_sysconfig"><a href="#" id="GetSystemConfig" class=""><span class="glyphicon glyphicon-menu-hamburger"></span> System Configuration</a></div>
+            }
+            else
+            {
+                <div class="btn_sysconfig"><a href="#" id="GetSystemConfig" class="disabled"><span class="glyphicon glyphicon-menu-hamburger"></span> System Configuration</a></div>
+            }
+            <div class="syssummary_panel_heading">System summary</div>
+            @if (Model != null && Model.CustomerDetails != null && Model.WaterSourceOne != null)
+            {
+                <div class="syssummary_panel_cont">
+                    <ul class="col-xs-6">
+                        <li>
+                            Train information <br>
+                            <span>
+                                @if (Model.Trains[0].using_manifold == "NO")
+                                {
+
+                                    @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - No Manifold</span>
+
+
+                                }
+                                else
+                                {
+
+                                    @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - Manifold</span>
+
+
+                                }
+                            </span>
+                        </li>
+                        <li><span>$@Html.DisplayFor(model => model.CustomerDetails.caustic_price) / lb</span> (Caustic)</li>
+                        <li><span>$@Html.DisplayFor(model => model.CustomerDetails.acid_price) / lb </span> (Acid)</li>
+                    </ul>
+                    <ul class="col-xs-6">
+                        <li>
+                            Water source(s)<br>
+                            <span>1: @Html.DisplayFor(model => model.WaterSourceOne.full_site_name)</span> <br>
+                            @if (Model != null && Model.WaterSourceTwo != null)
+                            {
+                                <span>2: @Html.DisplayFor(model => model.WaterSourceTwo.full_site_name)</span>
+
+                            }
+
+                        </li>
+                        <li>
+                            Water demand<br>
+                            <span>@string.Format("{0:n0}", Model.CustomerDetails.demand) gal / mo</span>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+            else
+            {
+                if (Model != null && Model.CustomerDetails != null)
+                {
+                    <div class="syssummary_panel_cont">
+                        <p class="plant_name">You have no summary data...<a href="#" id="GetSystemConfig" class="">Update Now!</a></p>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="syssummary_panel_cont">
+                        <p class="plant_name">You have no summary data...</p>
+
+
+                    </div>
+                }
+            }
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <!-- Graphs Left-->
+    <div class="col-xs-6">
+        @*@Html.ActionLink("Water Conductivity", "WaterConductivity", "Conductivity")*@
+        <h4>Water Conductivity</h4>
+        <div class="well graph_container" id="graph_container1">
+            @if (Model != null && Model.CustomerDetails != null && Model.WaterSourceOne != null)
+            {
+                <h5>
+                    @(Model.WaterSourceOne.full_site_name + " Conductivity")
+                </h5>
+            }
+            else
+            {
+                <h5>Conductiviy</h5>
+            }
+            <div class="graph_panel" id="Conductivity_Source_1">
+            @if (Model.CustomerDetails == null || Model.WaterSourceOne == null)
+            {
+                <div class="nodataimg" id="Conductivity_Source_1_nodata" ></div>
+             }
+            </div>
+            <h5>Conductiviy Forecast</h5>
+            <div class="graph_panel" id="Forecast_Source_1">
+            @if (Model.CustomerDetails == null || Model.WaterSourceOne == null)
+            {
+                <div class="nodataimg" ></div>
+            }
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphs Right-->
+    <div class="col-xs-6">
+
+        <h4>Predictive System Performance</h4>
+        <div class="well graph_container" id="graph_container2">
+            <div class="graph_panel" id="SaltSplitPlot">
+                <h5>Salt Split Degradation</h5>
+            @if (Model.CustomerDetails == null || Model.WaterSourceOne == null || Model.HasTrainDetails=="No")
+            {
+              <div class="nodataimg" id="SaltSplitPlot_nodata"></div>
+            }
+                        </div>
+
+            <div class="graph_panel" id="ThroghPutPlot">
+                <h5>Throughput Forecast</h5>
+                @if (Model.CustomerDetails == null || Model.WaterSourceOne == null || Model.HasTrainDetails == "No")
+                {
+                    <div class="nodataimg"></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sysConfig">
+    <div class="panel panel-default sysConfig_panel" id="slideout">
+        <div id="SettingsType">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="changeCustomer" tabindex="-1" role="dialog" aria-labelledby="changeCustomerLabel" hidden="hidden" data-backdrop="static" data-keyboard="false">
+
+    <div class="modal-dialog" role="document">
+
+        @using (Html.BeginForm("Create", "Customer", FormMethod.Post, new { @id = "createForm" }))
+        {
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="changeCustomerLabel">Change / Edit Customer Information</h4>
+                </div>
+
+                <div class="modal-body loader">
+                    <div class="EditableDiv">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="UpdateCustomer" class="btn btn-primary">Update/View Customer</button>
+                    <button type="button" class="btn btn-default btn-xs btn_cancel" data-dismiss="modal">Cancel, don't update</button>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+@*<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>*@
+@*<script src="~/Scripts/Customer.js"></script>*@
+<script src="~/Scripts/LoadDashboard.js"></script>
+<script>
+    var autocomplete = true;
+    $('#No').click(function () {
+        $(".modal_confirmation").modal('hide');
+        $('#secondWSchk').prop("checked", true);
+    })
+    $('#Yes').click(function () {
+        $(".modal_confirmation").modal('hide');
+        $('.secondWatersource_view').hide();
+    })
+
+
+
+
+
+</script>
+@Html.Partial("TrainChangesPopUP")
+@Html.Partial("_TrainChangeConfirm")
+@Html.Partial("_ConfirmPopup")
+<div id="resinLookup"></div>
+

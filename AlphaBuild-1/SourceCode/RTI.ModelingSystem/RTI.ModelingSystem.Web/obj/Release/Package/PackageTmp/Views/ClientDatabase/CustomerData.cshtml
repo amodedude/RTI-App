@@ -1,0 +1,133 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSummaryViewModel
+
+@{
+    ViewBag.Title = "CustomerData";
+}
+
+<h2>CustomerData</h2>
+<body>
+    <div>
+        <table border="0" width="100%">
+            <tr>
+                <td width="35%">
+                    <table border="0" width="100%" style="color:black">
+                        @if (Model != null && Model.CustomerDetails != null)
+                        {
+                            <tr>
+                                <td width="40%">
+                                    <h1>@Html.DisplayFor(model => model.CustomerDetails.name)</h1>
+                                </td>
+                                <td width="30%" style="color:gray">
+                                    @for (int i = 0; i < 12 - (Model.CustomerDetails.customerID).ToString().Length; i++)
+                                    {
+                                        if (i == 3 || i == 7)
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            <span>0</span>
+                                        }
+
+                                    }
+                                    @Html.DisplayFor(model => model.CustomerDetails.customerID)
+                                </td>
+                                <td width="30%">
+                                    <p style="color:darkcyan">Change/Edit</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <b>@Html.DisplayFor(model => model.CustomerDetails.plant) Plant</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <p>
+                                        @Html.DisplayFor(model => model.CustomerDetails.city), @Html.DisplayFor(model => model.CustomerDetails.state)
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    <h2>Customer Information</h2>
+                                    You have no customer selected...<span style="color:darkcyan">Change/Edit Customer</span>
+
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td width="35%">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td>
+                                <h2>Syatem summary</h2>
+                            </td>
+                        </tr>
+                        @if (Model != null && Model.CustomerDetails != null && Model.WaterSourceOne != null)
+                        {
+                            <tr>
+                                <td>
+                                    <p style="color:gray">Train information</p> <br />
+                                    @if (Model.Trains[0].using_manifold == "NO")
+                                    {
+                                        <p>
+                                            @Html.DisplayFor(model => model.CustomerDetails.num_trains) trains - No Manifold
+
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            @Html.DisplayFor(model => model.CustomerDetails.num_trains) trains - Manifold
+
+                                        </p>
+                                    }
+
+                                </td>
+                                <td>
+                                    <p style="color:gray">Water source(s)</p> <br />
+
+                                    <p>
+                                        1. @Html.DisplayFor(model => model.WaterSourceOne.full_site_name)
+                                    </p>
+                                    @if (Model != null && Model.WaterSourceTwo != null)
+                                    {
+                                        <p>
+                                            2. @Html.DisplayFor(model => model.WaterSourceTwo.full_site_name)
+                                        </p>
+                                    }
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>$@Html.DisplayFor(model => model.CustomerDetails.caustic_price)/lb <span style="color:gray">(Caustic)</span></p><br />
+                                    <p>$@Html.DisplayFor(model => model.CustomerDetails.acid_price)/lb <span style="color:gray">(Acid)</span></p>
+                                </td>
+                                <td>
+                                    <p style="color:gray">Water demand</p> <br />
+                                    <p>@Html.DisplayFor(model => model.CustomerDetails.demand) ga/mo</p>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    You have no summary data...<span style="color:darkcyan">Update Now!</span>
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>

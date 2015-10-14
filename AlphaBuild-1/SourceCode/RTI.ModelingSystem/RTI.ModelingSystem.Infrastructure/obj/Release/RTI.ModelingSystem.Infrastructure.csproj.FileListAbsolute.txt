@@ -1,0 +1,14 @@
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Infrastructure.dll.config
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Infrastructure.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Infrastructure.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.SqlServer.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Core.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Interfaces.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Core.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Interfaces.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.xml
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.SqlServer.xml
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\obj\Release\RTI.ModelingSystem.Infrastructure.csprojResolveAssemblyReference.cache
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\obj\Release\RTI.ModelingSystem.Infrastructure.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\obj\Release\RTI.ModelingSystem.Infrastructure.pdb

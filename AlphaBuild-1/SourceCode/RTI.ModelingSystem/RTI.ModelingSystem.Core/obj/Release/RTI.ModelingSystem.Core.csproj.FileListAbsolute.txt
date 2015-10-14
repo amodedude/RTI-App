@@ -1,0 +1,12 @@
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\RTI.ModelingSystem.Core.dll.config
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\RTI.ModelingSystem.Core.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\RTI.ModelingSystem.Core.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\EntityFramework.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\EntityFramework.SqlServer.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\MySql.Data.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\MySql.Data.Entity.EF6.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\EntityFramework.xml
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\bin\Release\EntityFramework.SqlServer.xml
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\obj\Release\RTI.ModelingSystem.Core.csprojResolveAssemblyReference.cache
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\obj\Release\RTI.ModelingSystem.Core.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Core\obj\Release\RTI.ModelingSystem.Core.pdb

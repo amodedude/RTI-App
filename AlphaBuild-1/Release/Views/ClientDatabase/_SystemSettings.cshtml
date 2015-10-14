@@ -1,0 +1,298 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSettings
+
+@*@Model RTI.ModelingSystem.Core.Models.SystemSettings*@
+
+@*<script src="~/Scripts/jquery-2.1.4.js"></script>*@
+@*<script src="~/Scripts/jquery-ui-1.10.3.js"></script>*@
+@*<script src="~/Scripts/bootstrap.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.price_format.2.0.min.js"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        $('#waterDemand').priceFormat({
+            prefix: '',
+            limit: 11,
+            centsLimit: 0,
+            thousandsSeparator: ','
+        });
+
+        var value = $('#firstWSPercentage').val();
+
+        if ($('#secondWSchk :checked')) {
+            $("#waterSourceSlider").slider({
+                range: "min",
+                value: 50,
+                min: 0,
+                max: 100,
+                slide: function (event, ui) {
+                    $("#firstPercentage").text(ui.value + "%");
+                    $("#secondPercentage").text((100 - ui.value) + "%");
+                    $('#firstWSPercentage').val(ui.value);
+                }
+            });
+            $("#waterSourceSlider").slider("value", value);
+            $("#firstPercentage").text($("#waterSourceSlider").slider("value") + "%");
+            $("#secondPercentage").text((100 - $("#waterSourceSlider").slider("value")) + "%");
+        }
+
+        $('#secondWSchk').change(function () {
+            if ($(this).is(':checked')) {
+                $('.secondWatersource_view').show();
+                $("#waterSourceSlider").slider({
+                    range: "min",
+                    value: 50,
+                    min: 0,
+                    max: 100,
+                    slide: function (event, ui) {
+                        $("#firstPercentage").text(ui.value + "%");
+                        $("#secondPercentage").text((100 - ui.value) + "%");
+                        $('#firstWSPercentage').val(ui.value);
+                    }
+                });
+                if (parseInt(value) == 0) {
+                    $("#firstPercentage").text($("#waterSourceSlider").slider("value") + "%");
+                    $("#secondPercentage").text((100 - $("#waterSourceSlider").slider("value")) + "%");
+                    $('#firstWSPercentage').val($("#waterSourceSlider").slider("value"));
+                }
+                else {
+                    $("#waterSourceSlider").slider("value", value);
+                    $("#firstPercentage").text($("#waterSourceSlider").slider("value") + "%");
+                    $("#secondPercentage").text((100 - $("#waterSourceSlider").slider("value")) + "%");
+                }
+            }
+            else {
+                $("#sysConfigConfirm").modal();
+            }
+
+        });
+    });
+</script>
+
+
+@*<div class="panel panel-default sysConfig_panel" id="slideout">
+    <div id="SettingsType">*@
+@using (Html.BeginForm("UpdateSystemSettings", "ClientDatabase", FormMethod.Post))
+{
+
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <div class="btn_sysconfig"><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span> System Configuration</a></div>
+            <button type="button" class="close btn_cancel_sysConfig" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </h4>
+    </div>
+    <form>
+        <div class="panel-body">
+            <div class="loaderTrainChangeMain" id="loadingSystemOrTrain">
+                <div>
+                    <img src="@Url.Content("~/Content/images/loading.gif")" />
+                </div>
+            </div>
+            @if (!(Session["IsNewCustomer"] != null && Session["IsNewCustomer"] == "True"))
+            {
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <select id="SystemOrTrain" class="form-control">
+                                <option value="1">System Settings</option>
+                                <option value="2">Train Settings</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="disabled">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <select id="SystemOrTrain" class="form-control">
+                                    <option value="1">System Settings</option>
+                                    <option value="2">Train Settings</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- System Settings -->
+            <div class="row syssettings_panel">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="quest" for="exampleInputPassword1">Do you have a Manifold System?</label>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(m => Model.isManifold, "false", new { @class = "manifold" }) No
+                                </label>
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(m => Model.isManifold, "true", new { @class = "manifold" }) Yes
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="quest" for="exampleInputPassword1">Chemical prices</label>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">Caustic</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">$</div>
+                                        @if (Model.caustic_price != null)
+                                        {
+                                            @Html.TextBoxFor(m => m.caustic_price, new { @id = "causticPrice", @cstType = "units", @class = "form-control" })
+                                            <div class="input-group-addon">/ lb</div>
+                                            @*@Html.ValidationMessageFor(m => m.caustic_price, "", new { @class = "text-danger" })*@
+                                        }
+                                        else
+                                        {
+
+
+                                            @Html.TextBoxFor(m => m.caustic_price, new { @id = "causticPrice", @Value = "1.00", @cstType = "units", @class = "form-control" })
+                                            <div class="input-group-addon">/ lb</div>
+                                            @*@Html.ValidationMessageFor(m => m.caustic_price, "", new { @class = "text-danger" })*@
+                                        }
+
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.caustic_price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">Acid</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">$</div>
+                                        @if (Model.acid_price != null)
+                                        {
+                                            @Html.TextBoxFor(m => m.acid_price, new { @id = "acidPrice", @cstType = "units", @class = "form-control" })
+                                            <div class="input-group-addon">/ lb</div>
+                                            @*@Html.ValidationMessageFor(m => m.acid_price, "", new { @class = "text-danger" })*@
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.acid_price, new { @id = "acidPrice", @Value = "1.00", @cstType = "units", @class = "form-control" })
+                                            <div class="input-group-addon">/ lb</div>
+                                            @*@Html.ValidationMessageFor(m => m.acid_price, "", new { @class = "text-danger" })*@
+                                        }
+
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.acid_price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <div class="col-xs-12 pad_0">
+                                    <label class="pull-left" for="exampleInputPassword1">Water Source(s) </label>
+                                    <div class="checkbox pull-left mar_0">
+                                        <label class="quest">
+                                            @Html.CheckBoxFor(m => m.HasTwoSources, new { @id = "secondWSchk" }) 2nd source
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="col-xs-4 pad_0">
+                                    @if (Model.firstWaterSource != null && Model.firstWaterSource != "")
+                                    {
+                                        <p>
+                                            @Html.DropDownListFor(m => m.firstWaterSource, Model.WaterSourceList1, new { @id = "firstWaterSource", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.firstWaterSource, "", new { @class = "text-danger" })
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            @Html.DropDownListFor(m => m.firstWaterSource, Model.WaterSourceList1, "Select Water Source", new { @id = "firstWaterSource", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.firstWaterSource, "", new { @class = "text-danger" })
+                                        </p>
+                                    }
+                                </div>
+                                @if (Model.HasTwoSources)
+                                {
+                                    <div class="col-xs-4 secondWatersource_view" id="secondwsddl" style="display:block">
+                                        @if (Model.secondWaterSource != null && Model.secondWaterSource != "")
+                                        {
+                                            @Html.DropDownListFor(m => m.secondWaterSource, Model.WaterSourceList2, new { @id = "secondWaterSource", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.secondWaterSource, "", new { @class = "text-danger" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownListFor(m => m.secondWaterSource, Model.WaterSourceList2, "Select Water Source", new { @id = "secondWaterSource", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.secondWaterSource, "", new { @class = "text-danger" })
+                                        }
+                                    </div>
+
+                                    @Html.TextBoxFor(m => m.firstWSPercentage, new { @id = "firstWSPercentage", @hidden = "hidden" })
+
+                                    <div class="col-xs-12 nopad_l-r secondWatersource_view" style="display:block">
+                                        <div class="pull-left text-right" style="width:30px;"><label id="firstPercentage">a</label></div>
+                                        <div class="pull-left col-xs-7 nopad_l"><div id="waterSourceSlider"></div></div>
+                                        <div class="pull-left" style="width:30px;"><label id="secondPercentage">b</label> </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-xs-4 secondWatersource_view" id="secondwsddl" style="display : none;">
+                                        @if (Model.secondWaterSource != null && Model.secondWaterSource != "")
+                                        {
+                                            @Html.DropDownListFor(m => m.secondWaterSource, Model.WaterSourceList2, new { @id = "secondWaterSource", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.secondWaterSource, "", new { @class = "text-danger" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownListFor(m => m.secondWaterSource, Model.WaterSourceList2, "Select Water Source", new { @id = "secondWaterSource", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.secondWaterSource, "", new { @class = "text-danger" })
+                                        }
+                                    </div>
+
+                                    @Html.TextBoxFor(m => m.firstWSPercentage, new { @id = "firstWSPercentage", @hidden = "hidden" })
+
+                                    <div class="col-xs-12 secondWatersource_view nopad_l-r" style="display : none;">
+                                        <div class="col-xs-1"><label id="firstPercentage">a</label></div>
+                                        <div class="col-xs-8"><div id="waterSourceSlider"></div></div>
+                                        <div class="col-xs-1"><label id="secondPercentage">b</label></div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Water demand (gal / mo)</label>
+                                @if (Model.demand == null || Model.demand == "")
+                                {
+                                    @Html.TextBoxFor(m => m.demand, new { @id = "waterDemand", @Value = "100", maxlength = 11 })
+                                    @*@Html.ValidationMessageFor(m => m.demand, "", new { @class = "text-danger" })*@
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.demand, new { @id = "waterDemand", maxlength = 11 })
+                                    @*@Html.ValidationMessageFor(m => m.demand, "", new { @class = "text-danger" })*@
+                                }
+                            </div>
+                            @Html.ValidationMessageFor(m => m.demand, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Update System</button>
+            <button type="button" class="btn btn-default btn-xs btn_cancel btn_cancel_sysConfig" data-dismiss="modal">Cancel, don't update</button>
+        </div>
+    </form>
+}
+

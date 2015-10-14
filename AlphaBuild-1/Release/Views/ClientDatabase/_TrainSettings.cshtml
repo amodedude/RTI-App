@@ -1,0 +1,1556 @@
+﻿@model RTI.ModelingSystem.Core.Models.Trainsettings
+@{
+    //Layout = null;
+}
+
+@*@using (Html.BeginForm("TrainSettings", "ClientDatabase", FormMethod.Post))*@
+@*@using (Html.BeginForm(new { @id ="trainForm"}))*@
+@using (Html.BeginForm("TrainSettings", "ClientDatabase", FormMethod.Post, new { @id = "trainForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel-heading">
+
+        <h4 class="panel-title">
+            <div class="btn_sysconfig"><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span> System Configuration</a></div>
+            <button type="button" id="trainSettingsClose" class="close btn_cancel_sysConfig" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </h4>
+    </div>
+    <form>
+        <div class="panel-body">
+            <div class="loaderTrainChangeMain" id="loadingTrain">
+                <div>
+                    <img src="@Url.Content("~/Content/images/loading.gif")" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <select id="SystemOrTrain" class="form-control">
+                            <option value="1">System Settings</option>
+                            <option value="2">Train Settings</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- System Settings -->
+            <div id="trainandvesselDisplaysetting">
+                <div class="row trainsettings_panel">
+                    <div class="col-xs-2">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(model => model.Train.name, new { @id = "txtTrainName", @style = "display:none;" })
+                                    @Html.TextBoxFor(model => model.Train.num_beds_cation, new { @id = "txtNum_beds_cation", @style = "display:none;" })
+                                    @Html.TextBoxFor(model => model.Train.num_beds_anion, new { @id = "txtNum_beds_anion", @style = "display:none;" })
+                                    @Html.TextBoxFor(model => model.Train.number, new { @id = "txtTrainNumber", @style = "display:none;" })
+                                    @Html.TextBoxFor(model => model.Train.using_manifold, new { @id = "txtTrainusing_manifold", @style = "display:none;" })
+                                    @Html.DropDownListFor(model => model.Train.trainID, Model.TrianNoList, new { @id = "ddlTrains" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">Dual beds:</label>
+                                    <div class="checkbox mar_0 pad_0">
+                                        <label class="quest">
+                                            @Html.CheckBoxFor(model => model.cation, new { id = "chkCation" }) Cation
+
+                                        </label>
+                                    </div>
+                                    <div class="checkbox mar_0 pad_0">
+                                        <label class="quest">
+                                            @Html.CheckBoxFor(model => model.anion, new { id = "chkAnion" }) Anion
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">Gal / min. per train</label>
+                                    @if (Model.Train.gpm != "0" && Model.Train.gpm != null)
+                                    {
+                                        @Html.TextBoxFor(model => model.Train.gpm, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(model => model.Train.gpm, new { @class = "form-control", @Value = "100", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                    }
+                                    @*@Html.TextBoxFor(model => model.Train.gpm, new { @class = "form-control" })*@
+                                    @*@Html.TextBoxFor(model => model.Train.gpm, new { @class = "form-control", @value = Model.Train.gpm == "0" ? "100" : "" })*@
+                                    @Html.ValidationMessageFor(model => model.Train.gpm, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">Regens / mo.</label>
+                                    @if (Model.Train.regens_per_month != "0" && Model.Train.regens_per_month != null)
+                                    {
+                                        @Html.TextBoxFor(model => model.Train.regens_per_month, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(model => model.Train.regens_per_month, new { @class = "form-control", @Value = "1", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                    }
+                                    @*@Html.TextBoxFor(model => model.Train.regens_per_month, new { @class = "form-control" })*@
+                                    @Html.ValidationMessageFor(model => model.Train.regens_per_month, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">hrs for regeneration</label>
+                                    @if (Model.Train.regen_duration != "0" && Model.Train.regen_duration != null)
+                                    {
+                                        @Html.TextBoxFor(model => model.Train.regen_duration, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(model => model.Train.regen_duration, new { @class = "form-control", @Value = "10", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                    }
+                                    @*@Html.TextBoxFor(model => model.Train.regen_duration, new { @class = "form-control" })*@
+                                    @Html.ValidationMessageFor(model => model.Train.regen_duration, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="beds">
+                        <!-- Cation Bed #1 -->
+                        <div class="col-xs-2 cb_1" id="c1">
+                            <div class="train_title">Cation bed #1</div>
+                            <div class="trainH">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(model => model.VesslsList[0].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                                            @*@Html.TextBoxFor(model => model.VesslsList[0].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                                            @Html.TextBoxFor(model => model.VesslsList[0].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[0].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[0].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[0].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[0].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[0].UpdateVessel, new { @id = "txtUpdateVessel0", @style = "display:none;" })
+                                            <label for="exampleInputAmount">Vessel name</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[0].name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[0].name, "", new { @class = "text-danger" })
+                                            @Html.HiddenFor(model => model.VesslsList[0].ResinModel, new { @id = "ResinModel0" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin product model</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @Html.TextBoxFor(model => model.VesslsList[0].ResinModel, new { @id = "txtResinProductModelCatBed1R", @style = "display:none;" })
+                                                @*<input type="text" class="form-control" id="txtResinProductModelCatBed1" placeholder="Type to select resin...">*@
+                                                @*<input type="text" class="form-control" id="txtResinProductModelCatBed1" placeholder="Type to select resin...">*@
+                                                @Html.TextBoxFor(model => model.VesslsList[0].ResinModel, new { @id = "txtResinProductModelCatBed1", @class = "form-control", @Placeholder = "Type to select resin..." })
+                                                <span id="lblErrorCB1" class="text-danger">Resin product model is required</span>
+                                                <span id="lblErrorCB1Invalid" class="text-danger">Please enter a valid Resin product model</span>
+                                                @Html.ValidationMessageFor(model => model.VesslsList[0].ResinModel, "", new { @class = "text-danger" })
+
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><a class="pull-left btn_search_resin" id="GetResinProductModalLookupCatBed1" href="#"><span class="glyphicon glyphicon-search"></span></a></div>
+                                            <span id="ResignDetailsCatBed1" class="staticinfo"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin price (ft<sup>3</sup>)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                @Html.TextBoxFor(model => model.VesslsList[0].price_per_cuft, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                                @*<input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">*@
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.VesslsList[0].price_per_cuft, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">Purchase date</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[0].date_replaced, new { @class = "form-control", id = "cation1", @placeholder = "mm/dd/yyyy", maxlength = 10 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[0].date_replaced, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Replace</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @Html.TextBoxFor(model => model.VesslsList[0].replacement_plan, new { @class = "form-control", onkeypress = "return isNumberWithoutDot(event)", maxlength = 3 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[0].replacement_plan, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><span class="btn_search_resin">Yrs</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">(ft<sup>3</sup>) of Resin</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[0].size, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[0].size, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">lb/ (ft<sup>3</sup>) of Acid</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[0].lbs_chemical, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[0].lbs_chemical, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Total Hardness</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[0].toc, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[0].toc, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row with_Polisher">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">With:</label>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @*<input type="checkbox" value="">
+                                                    Degasifier*@
+                                                @*@if (Model.VesslsList[0].with_degassifier == "0")
+                                                    {
+                                                            @Html.CheckBoxFor(model => model.Degasifier, new { id = "chkDegasifier" })
+                                                    }
+                                                    else if (Model.VesslsList[0].with_degassifier == "1")
+                                                    {
+                                                        @Html.CheckBoxFor(model => model.Degasifier, new { id = "chkDegasifier" })
+                                                    }
+                                                    Degasifier*@
+                                                @Html.CheckBoxFor(model => model.VesslsList[0].Degasifier, new { id = "chkDegasifier0" }) Degasifier
+                                            </label>
+                                        </div>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[0].Polisher, new { id = "chkPolisher0" })
+                                                Polisher
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cation Bed #1 End -->
+                        <!-- Cation Bed #2 -->
+                        <div class="col-xs-2 cb_2" id="cation2div">
+                            <div class="train_title">Cation bed #2</div>
+                            <div class="trainH">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(model => model.VesslsList[2].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                                            @*@Html.TextBoxFor(model => model.VesslsList[2].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                                            @Html.TextBoxFor(model => model.VesslsList[2].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[2].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[2].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[2].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[2].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[2].UpdateVessel, new { @id = "txtUpdateVessel2", @style = "display:none;" })
+                                            @Html.HiddenFor(model => model.VesslsList[2].ResinModel, new { @id = "ResinModel2" })
+
+                                            <label for="exampleInputAmount">Vessel name</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[2].name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[2].name, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin product model</label>
+                                            <div class="col-xs-10 pad_0">
+
+                                                @*<input type="text" class="form-control" id="txtResinProductModelCatBed2" placeholder="Type to select resin...">*@
+                                                @Html.TextBoxFor(model => model.VesslsList[2].ResinModel, new { @id = "txtResinProductModelCatBed2", @class = "form-control", @Placeholder = "Type to select resin..." })
+                                                <span id="lblErrorCB2" class="text-danger">Resin product model is required</span>
+                                                <span id="lblErrorCB2Invalid" class="text-danger">Please enter a valid Resin product model</span>
+                                                @Html.ValidationMessageFor(model => model.VesslsList[2].ResinModel, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><a class="pull-left btn_search_resin" id="GetResinProductModalLookupCatBed2" href="#"><span class="glyphicon glyphicon-search"></span></a></div>
+                                            <span id="ResignDetailsCatBed2" class="staticinfo"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin price (ft<sup>3</sup>)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                @Html.TextBoxFor(model => model.VesslsList[2].price_per_cuft, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.VesslsList[2].price_per_cuft, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">Purchase date</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[2].date_replaced, new { @class = "form-control", id = "cation2", @placeholder = "mm/dd/yyyy", maxlength = 10 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[2].date_replaced, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Replace</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @Html.TextBoxFor(model => model.VesslsList[2].replacement_plan, new { @class = "form-control", onkeypress = "return isNumberWithoutDot(event)", maxlength = 3 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[2].replacement_plan, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><span class="btn_search_resin">Yrs</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">(ft<sup>3</sup>) of Resin</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[2].size, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[2].size, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">lb/ (ft<sup>3</sup>) of Acid</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[2].lbs_chemical, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[2].lbs_chemical, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Total Hardness</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[2].toc, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[2].toc, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row with_Polisher">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">With:</label>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[2].Degasifier, new { id = "chkDegasifier2" })
+                                                Degasifier
+                                            </label>
+                                        </div>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[0].Polisher, new { id = "chkPolisher2" })
+                                                Polisher
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cation Bed #2 End -->
+                        <!-- Anion Bed #1 -->
+                        <div class="col-xs-2 ab_1">
+                            <div class="train_title">Anion bed #1</div>
+                            <div class="trainH">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(model => model.VesslsList[1].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                                            @*@Html.TextBoxFor(model => model.VesslsList[1].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                                            @Html.TextBoxFor(model => model.VesslsList[1].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[1].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[1].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[1].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[1].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[1].UpdateVessel, new { @id = "txtUpdateVessel1", @style = "display:none;" })
+                                            @Html.HiddenFor(model => model.VesslsList[1].ResinModel, new { @id = "ResinModel11" })
+
+                                            <label for="exampleInputAmount">Vessel name</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[1].name, new { id = "VesselName1", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[1].name, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin product model</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @*<input type="text" class="form-control" id="txtResinProductModelCatBed11" placeholder="Type to select resin...">*@
+                                                @Html.TextBoxFor(model => model.VesslsList[1].ResinModel, new { @id = "txtResinProductModelCatBed11", @class = "form-control", @Placeholder = "Type to select resin..." })
+                                                <span id="lblErrorCB11" class="text-danger">Resin product model is required</span>
+                                                <span id="lblErrorCB11Invalid" class="text-danger">Please enter a valid Resin product model</span>
+                                                @Html.ValidationMessageFor(model => model.VesslsList[1].ResinModel, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><a class="pull-left btn_search_resin" id="GetResinProductModalLookupAnionBed1" href="#"><span class="glyphicon glyphicon-search"></span></a></div>
+                                            <span id="ResignDetailsCatBed11" class="staticinfo"></span>
+                                            @*<span class="staticinfo">SAC, DOW (Marathon C)</span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin price (ft<sup>3</sup>)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                @Html.TextBoxFor(model => model.VesslsList[1].price_per_cuft, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.VesslsList[1].price_per_cuft, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">Purchase date</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[1].date_replaced, new { @class = "form-control", id = "anion1", @placeholder = "mm/dd/yyyy", maxlength = 10 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[1].date_replaced, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Replace</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @Html.TextBoxFor(model => model.VesslsList[1].replacement_plan, new { @class = "form-control", onkeypress = "return isNumberWithoutDot(event)", maxlength = 3 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[1].replacement_plan, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><span class="btn_search_resin">Yrs</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">(ft<sup>3</sup>) of Resin</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[1].size, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[1].size, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">lb/ (ft<sup>3</sup>) of Caustic</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[1].lbs_chemical, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[1].lbs_chemical, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Total Organic Carbon</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[1].toc, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[1].toc, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (Model.Train.using_manifold != "NO")
+                                {
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputAmount">Throughput</label>
+                                                @Html.TextBoxFor(model => model.VesslsList[1].throughput, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[1].throughput, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputAmount">Regens / mo.</label>
+                                                @if (Model.Train.regens_per_month != "0")
+                                                {
+                                                    @Html.TextBoxFor(model => model.VesslsList[1].num_regens, new { @class = "form-control", onkeypress = "return isNumber(event)", @Id = "Anion1Resin", maxlength = 9 })
+                                                }
+                                                else
+                                                {
+                                                    @Html.TextBoxFor(model => model.VesslsList[1].num_regens, new { @class = "form-control", onkeypress = "return isNumber(event)", @Value = "", @Id = "Anion1Resin", maxlength = 9 })
+                                                }
+                                                @Html.ValidationMessageFor(model => model.VesslsList[1].num_regens, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputAmount">Salt Split</label>
+                                                @Html.TextBoxFor(model => model.VesslsList[1].Salt_Split, new { id = "SaltSplit1", @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[1].Salt_Split, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row with_Polisher">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">With:</label>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[1].Degasifier, new { id = "chkDegasifier1" })
+                                                Degasifier
+                                            </label>
+                                        </div>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[1].Polisher, new { id = "chkPolisher1" })
+                                                Polisher
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Anion Bed #1 End-->
+                        <!-- Anion Bed #2 -->
+
+                        <div class="col-xs-2 ab_2" id="anion2div">
+                            <div class="train_title">Anion bed #2</div>
+                            <div class="trainH">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+
+                                            @Html.TextBoxFor(model => model.VesslsList[3].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                                            @*@Html.TextBoxFor(model => model.VesslsList[3].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                                            @Html.TextBoxFor(model => model.VesslsList[3].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[3].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[3].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[3].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[3].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                                            @Html.TextBoxFor(model => model.VesslsList[3].UpdateVessel, new { @id = "txtUpdateVessel3", @style = "display:none;" })
+                                            @Html.HiddenFor(model => model.VesslsList[3].ResinModel, new { @id = "ResinModel3" })
+                                            <label for="exampleInputAmount">Vessel name</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[3].name, new { id = "VesselName3", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[3].name, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin product model</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @*<input type="text" class="form-control" id="txtResinProductModelCatBed3" placeholder="Type to select resin...">*@
+                                                @Html.TextBoxFor(model => model.VesslsList[3].ResinModel, new { @id = "txtResinProductModelCatBed3", @class = "form-control", @Placeholder = "Type to select resin..." })
+                                                <span id="lblErrorCB3" class="text-danger">Resin product model is required</span>
+                                                <span id="lblErrorCB3Invalid" class="text-danger">Please enter a valid Resin product model</span>
+                                                @Html.ValidationMessageFor(model => model.VesslsList[3].ResinModel, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><a class="pull-left btn_search_resin" id="GetResinProductModalLookupAnionBed2" href="#"><span class="glyphicon glyphicon-search"></span></a></div>
+                                            <span id="ResignDetailsCatBed3" class="staticinfo"></span>
+                                            @*<span class="staticinfo">SAC, DOW (Marathon C)</span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Resin price (ft<sup>3</sup>)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                @Html.TextBoxFor(model => model.VesslsList[3].price_per_cuft, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.VesslsList[3].price_per_cuft, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">Purchase date</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[3].date_replaced, new { @class = "form-control", id = "anion2", @placeholder = "mm/dd/yyyy", maxlength = 10 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[3].date_replaced, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Replace</label>
+                                            <div class="col-xs-10 pad_0">
+                                                @Html.TextBoxFor(model => model.VesslsList[3].replacement_plan, new { @class = "form-control", onkeypress = "return isNumberWithoutDot(event)", maxlength = 3 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[3].replacement_plan, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">*@
+                                            </div>
+                                            <div class="col-xs-2 pad_0"><span class="btn_search_resin">Yrs</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group mar_0">
+                                            <label for="exampleInputAmount">(ft<sup>3</sup>) of Resin</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[3].size, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[3].size, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">lb/ (ft<sup>3</sup>) of Caustic</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[3].lbs_chemical, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[3].lbs_chemical, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputAmount">Total Organic Carbon</label>
+                                            @Html.TextBoxFor(model => model.VesslsList[3].toc, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                            @Html.ValidationMessageFor(model => model.VesslsList[3].toc, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (Model.Train.using_manifold != "NO")
+                                {
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputAmount">Throughput</label>
+                                                @Html.TextBoxFor(model => model.VesslsList[3].throughput, new { @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[3].throughput, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputAmount">Regens / mo.</label>
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                                @if (Model.Train.regens_per_month != "0")
+                                                {
+                                                    @Html.TextBoxFor(model => model.VesslsList[3].num_regens, new { @class = "form-control", onkeypress = "return isNumber(event)", @Id = "Anion2Resin", maxlength = 9 })
+                                                }
+                                                else
+                                                {
+                                                    @Html.TextBoxFor(model => model.VesslsList[3].num_regens, new { @class = "form-control", onkeypress = "return isNumber(event)", @Value = "", @Id = "Anion2Resin", maxlength = 9 })
+                                                }
+                                                @Html.ValidationMessageFor(model => model.VesslsList[1].num_regens, "", new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputAmount">Salt Split</label>
+                                                @Html.TextBoxFor(model => model.VesslsList[3].Salt_Split, new { id = "SaltSplit3", @class = "form-control", onkeypress = "return isNumber(event)", maxlength = 9 })
+                                                @Html.ValidationMessageFor(model => model.VesslsList[3].Salt_Split, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row with_Polisher">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">With:</label>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[3].Degasifier, new { id = "chkDegasifier3" })
+                                                Degasifier
+                                            </label>
+                                        </div>
+                                        <div class="checkbox mar_0 pad_0">
+                                            <label class="quest">
+                                                @Html.CheckBoxFor(model => model.VesslsList[3].Polisher, new { id = "chkPolisher3" })
+                                                Polisher
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anion Bed #2 End-->
+                    </div>
+                    <!-- Mixed Bed -->
+                    <div class="col-xs-2 mb_1">
+                        <div class="train_title">Mixed bed</div>
+                        <div class="trainH">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Vessel name</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Resin product model</label>
+                                        <div class="col-xs-10 pad_0">
+                                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">
+                                        </div>
+                                        <div class="col-xs-2 pad_0"><a class="pull-left btn_search_resin" href="#"><span class="glyphicon glyphicon-search"></span></a></div>
+                                        <span class="staticinfo">SAC, DOW (Marathon C)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Resin price (ft<sup>3</sup>)</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group mar_0">
+                                        <label for="exampleInputAmount">Purchase date</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Replace</label>
+                                        <div class="col-xs-10 pad_0">
+                                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to select resin...">
+                                        </div>
+                                        <div class="col-xs-2 pad_0"><span class="btn_search_resin">Yrs</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group mar_0">
+                                        <label for="exampleInputAmount">(ft<sup>3</sup>) of Resin</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">lb/ (ft<sup>3</sup>) of Acid</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Total Organic Carbon</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Throughput</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputAmount">Salt Split</label>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row with_Polisher">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="exampleInputAmount">With:</label>
+                                    <div class="checkbox mar_0 pad_0">
+                                        <label class="quest">
+                                            <input type="checkbox" value="">
+                                            Degasifier
+                                        </label>
+                                    </div>
+                                    <div class="checkbox mar_0 pad_0">
+                                        <label class="quest">
+                                            <input type="checkbox" value="">
+                                            Polisher
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input type="button" name="update" value="Update System" class="btn btn-primary" id="btnSubmit" />
+            @*<button type="button" class="btn btn-primary">Update System</button>*@
+
+            <button type="button" id="trainSettingsCancel" class="btn btn-default btn-xs btn_cancel btn_cancel_sysConfig" data-dismiss="modal">Cancel, don't update</button>
+        </div>
+    </form>
+
+
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+    function IsResimModelValid(resinModel) {        
+        var isValid = "False";
+        $.ajax({
+            url: '/ClientDatabase/IsResinModelValid',
+            type: 'GET',
+            async: false,
+            data: { resinModelNumber: resinModel },            
+            success: function (validity) {                                
+                isValid = validity;
+            }
+        });
+        return isValid;
+        }
+
+    $(function () {
+        
+        if ($('#VesselName1').val() == "") {
+            $('#SaltSplit1').val("");//Set saltsplit textbox to empty for new vessel
+        }
+
+        if ($('#VesselName3').val() == "") {
+            $('#SaltSplit3').val("");//Set saltsplit textbox to empty for new vessel
+        }
+
+        $('#lblErrorCB1').hide();
+        $('#lblErrorCB1Invalid').hide();        
+        $('#lblErrorCB11').hide();
+        $('#lblErrorCB11Invalid').hide();
+        $('#lblErrorCB2').hide();
+        $('#lblErrorCB2Invalid').hide();
+        $('#lblErrorCB3').hide();
+        $('#lblErrorCB3Invalid').hide();
+
+        $('#btnSubmit').off("click").on("click", function (event) {
+            var ErrorFlag = 0;
+            if ($('#txtResinProductModelCatBed1').val() == "") {
+                $('#lblErrorCB1').show();
+                $('#lblErrorCB1Invalid').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed1').hide();
+            }
+            else if (IsResimModelValid($('#txtResinProductModelCatBed1').val()) == "False")
+            {
+                $('#lblErrorCB1Invalid').show();
+                $('#lblErrorCB1').hide();
+                    ErrorFlag = 1;
+                    $('#ResignDetailsCatBed1').hide();
+            }
+            else {
+                $('#lblErrorCB1').hide();
+                $('#lblErrorCB1Invalid').hide();
+                $('#ResignDetailsCatBed1').show();
+                //ErrorFlag = 0;
+            }
+
+            if ($('#txtResinProductModelCatBed11').val() == "") {
+                $('#lblErrorCB11').show();
+                $('#lblErrorCB11Invalid').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed11').hide();
+            }
+            else if (IsResimModelValid($('#txtResinProductModelCatBed11').val()) == "False") {
+                $('#lblErrorCB11Invalid').show();
+                $('#lblErrorCB11').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed11').hide();
+            }
+            else {
+                $('#lblErrorCB11').hide();
+                $('#lblErrorCB11Invalid').hide();
+                $('#ResignDetailsCatBed11').show();
+                //ErrorFlag = 0;
+            }
+            if ($('#txtResinProductModelCatBed2').val() == "" && $('#chkCation').prop("checked")) {
+                $('#lblErrorCB2').show();
+                $('#lblErrorCB2Invalid').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed2').hide();
+            }
+            else if ($('#chkCation').prop("checked") && IsResimModelValid($('#txtResinProductModelCatBed2').val()) == "False") {
+                $('#lblErrorCB2Invalid').show();
+                $('#lblErrorCB2').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed2').hide();
+            }
+            else {
+                $('#lblErrorCB2').hide();
+                $('#lblErrorCB2Invalid').hide();
+                $('#ResignDetailsCatBed2').show();
+                //ErrorFlag = 0;
+            }
+            if ($('#txtResinProductModelCatBed3').val() == "" && $('#chkAnion').prop("checked")) {
+                $('#lblErrorCB3').show();
+                $('#lblErrorCB3Invalid').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed3').hide();
+            }
+            else if ($('#chkAnion').prop("checked") && IsResimModelValid($('#txtResinProductModelCatBed3').val()) == "False") {
+                $('#lblErrorCB3Invalid').show();
+                $('#lblErrorCB3').hide();
+                ErrorFlag = 1;
+                $('#ResignDetailsCatBed3').hide();
+            }
+            else {
+                $('#lblErrorCB3').hide();
+                $('#lblErrorCB3Invalid').hide();
+                $('#ResignDetailsCatBed3').show();
+                //ErrorFlag = 0;
+            }
+
+            if (ErrorFlag == 1) {
+                event.preventDefault();
+                return false;
+            }
+            else {
+                $('#TrainChangeConfirm').modal('show');
+                //return true;
+            }
+        });
+
+        $('#txtUpdateVessel0').val("True");
+        $('#txtUpdateVessel1').val("True");
+
+        if ($('#chkCation').prop("checked")) {
+            $('#cation2div').show();
+            $('#txtNum_beds_cation').val("2");
+            $('#txtUpdateVessel2').val("True");
+        } else {
+            $('#cation2div').hide();
+            $('#txtUpdateVessel2').val("False");
+            $('#txtNum_beds_cation').val("1");
+        }
+
+        if ($('#chkAnion').prop("checked")) {
+            $('#anion2div').show();
+            $('#txtUpdateVessel3').val("True");
+            $('#txtNum_beds_anion').val("2");
+        } else {
+            $('#anion2div').hide();
+            $('#txtUpdateVessel3').val("False");
+            $('#txtNum_beds_anion').val("1");
+        }
+
+        $('#ddlTrains').change(function (ev) {
+            $("#loadingTrain").show();
+            $(".sysConfig_panel .panel-body").css("overflow", "hidden");
+            var isDirty = false;
+
+            $(':input').each(function () {
+                var temp = $(this).attr("id");
+                if ((temp != undefined && temp != "ddlTrains" && temp != "SystemOrTrain") && $(this).css('display') != "none") {
+                    if ($(this).is(':checkbox')) {
+
+                        var testValue;
+                        if ($(this).is(':checked') == true) {
+                            testValue = 1;
+                        }
+                        else {
+                            testValue = 0;
+                        }
+
+                        if ($(this).data('initialValue') != undefined && $(this).is(':checked') != undefined && $(this).data('initialValue') != testValue) {
+                            isDirty = true;
+                            return false;
+                            //alert($(this).data('initialValue'));
+                            //alert($(this).is(':checked'));
+                            //alert(temp);
+                        }
+                    }
+                    else if ($(this).data('initialValue') != undefined && $(this).val() != undefined && $(this).data('initialValue') != $(this).val()) {
+                        isDirty = true;
+                        return false;
+                        //alert($(this).data('initialValue'));
+                        //alert($(this).val());
+                        //alert(temp);
+                    }
+                }
+            });
+
+            if (isDirty == true) {
+                $("#loadingTrain").hide();
+                $(".sysConfig_panel .panel-body").css("overflow", "auto");
+                $('#TrainChangeConfirmPopUP').modal('show');
+            }
+            else {
+                processTrainData();
+            }
+        });
+
+        $('#TrainYes_Navigate').click(function () {
+            $('#TrainChangeConfirmPopUP').modal('hide');
+            processTrainData();
+        });
+
+        $('#TrainNo_Navigate').click(function () {
+            $('#TrainChangeConfirmPopUP').modal('hide');
+            var predata = prevDrop;
+            $('#ddlTrains').val(predata);
+            return false;
+        });
+
+        function processTrainData() {
+            $("#loadingTrain").show();
+            $(".sysConfig_panel .panel-body").css("overflow", "hidden");
+            var trainId = $('#ddlTrains').val();
+            var SelectedText = $('#ddlTrains').find(":selected").text();
+            var TrainNumber = SelectedText.slice(-1);
+            $('#txtTrainNumber').text(TrainNumber);
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("TrainSettings","ClientDataBase")",
+                data: { Data: trainId },
+                success: function (data) {
+                    autocomplete = false
+                    $('#trainandvesselDisplaysetting').empty();
+                    $('#trainandvesselDisplaysetting').html(data);
+
+                    $(':input').each(function () {
+                        $(this).data('initialValue', null);
+                        if ($(this).is(':checkbox')) {
+                            if ($(this).is(':checked') == true) {
+                                $(this).data('initialValue', 1);
+                            }
+                            else {
+                                $(this).data('initialValue', 0);
+                            }
+                        }
+                        else {
+                            $(this).data('initialValue', $(this).val());
+                        }
+                    });
+                    var prevDrop = $('#ddlTrains').val();
+
+                    $("#loadingTrain").hide();
+                    $(".sysConfig_panel .panel-body").css("overflow", "auto");
+                },
+
+                error: function (xhr) {
+
+                    window.location.href = "/ClientDatabase/Errorview";
+                }
+            });
+        }
+
+        var resen0 = @Html.Raw(Json.Encode(Model))
+        $('#cation1').datepicker();
+        $('#anion1').datepicker();
+        $('#cation2').datepicker();
+        $('#anion2').datepicker();
+
+
+        if (resen0 != null && resen0.VesslsList != null && resen0.VesslsList[0] != null && resen0.VesslsList[0].ResinData != "" && resen0.VesslsList[0].ResinData != null) {
+            $('#ResignDetailsCatBed1').show();
+            $("#ResignDetailsCatBed1").html(resen0.VesslsList[0].ResinData);
+        }
+        else {
+            $('#ResignDetailsCatBed1').hide();
+        }
+
+        if (resen0 != null && resen0.VesslsList != null && resen0.VesslsList[1] != null && resen0.VesslsList[1].ResinData != "" && resen0.VesslsList[1].ResinData != null) {
+            $('#ResignDetailsCatBed11').show();
+            $("#ResignDetailsCatBed11").html(resen0.VesslsList[1].ResinData);
+        }
+        else {
+            $('#ResignDetailsCatBed11').hide();
+        }
+
+        if (resen0 != null && resen0.VesslsList != null && resen0.VesslsList[2] != null && resen0.VesslsList[2].ResinData != "" && resen0.VesslsList[2].ResinData != null) {
+            $('#ResignDetailsCatBed2').show();
+            $("#ResignDetailsCatBed2").html(resen0.VesslsList[2].ResinData);
+        }
+        else {
+            $('#ResignDetailsCatBed2').hide();
+        }
+
+        if (resen0 != null && resen0.VesslsList != null && resen0.VesslsList[3] != null && resen0.VesslsList[3].ResinData != "" && resen0.VesslsList[3].ResinData != null) {
+            $('#ResignDetailsCatBed3').show();
+            $("#ResignDetailsCatBed3").html(resen0.VesslsList[3].ResinData);
+        }
+        else {
+            $('#ResignDetailsCatBed3').hide();
+        }
+        @*$("#txtResinProductModelCatBed1").val(@Model.Vessel[0].ReseneModel);
+        $("#txtResinProductModelCatBed11").val('@Model.Vessel[1].ReseneModel');
+        $("#txtResinProductModelCatBed2").val('@Model.Vessel[2].ReseneModel');
+        $("#txtResinProductModelCatBed3").val('@Model.Vessel[3].ReseneModel');
+
+        $("#ResignDetailsCatBed1").html('@Model.Vessel[0].ResinData');
+        $("#ResignDetailsCatBed11").html('@Model.Vessel[1].ResinData');
+        $("#ResignDetailsCatBed2").html('@Model.Vessel[2].ResinData');
+        $("#ResignDetailsCatBed3").html('@Model.Vessel[3].ResinData');*@
+    });
+    function onChangeId() {
+
+        @*jQuery.ajax({
+           url: '@Url.Action("Action Method Name", "Controller Name")',
+           type: 'POST',
+           contentType: 'application/json',
+           data: JSON.stringify({ data: data2 }),
+           success: function (result) { }
+       });*@
+    }
+
+    function isNumberWithoutDot(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        //if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46) {
+
+        if (evt.keyCode == '9' || evt.keyCode == '16') {
+            return;
+        }
+        var code;
+        if (evt.keyCode) code = evt.keyCode;
+        else if (evt.which) code = evt.which;
+        if (evt.which == 46)
+            return false;
+        if (code == 8 || code == 46)
+            return true;
+        if (code < 48 || code > 57)
+            return false;
+        return true;
+
+    }
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        //if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46) {
+
+        if (evt.keyCode == '9' || evt.keyCode == '16') {
+            return;
+        }
+        var code;
+        if (evt.keyCode) code = evt.keyCode;
+        else if (evt.which) code = evt.which;
+        if (evt.which == 46)
+            return true;
+        if (code == 8 || code == 46)
+            return true;
+        if (code < 48 || code > 57)
+            return false;
+        return true;
+    }
+    $('#chkCation').change(function () {
+        
+        //$(':input').each(function () {
+        //    $(this).data('initialValue', null);
+        //    if ($(this).is(':checkbox')) {
+        //        if ($(this).is(':checked') == true) {
+        //            $(this).data('initialValue', 1);
+        //        }
+        //        else {
+        //            $(this).data('initialValue', 0);
+        //        }
+        //    }
+        //    else {
+        //        $(this).data('initialValue', $(this).val());
+        //    }
+        //});
+        //var prevDrop = $('#ddlTrains').val();
+
+
+        if ($(this).prop("checked")) {
+            $('#cation2div').show();
+            $('#txtNum_beds_cation').val("2");
+            $('#txtUpdateVessel2').val("True");
+        } else {
+            $('#cation2div').hide();
+            $('#txtUpdateVessel2').val("False");
+            $('#txtNum_beds_cation').val("1");
+        }
+    });
+    $('#chkAnion').change(function () {
+
+        //$(':input').each(function () {
+        //    $(this).data('initialValue', null);
+        //    if ($(this).is(':checkbox')) {
+        //        if ($(this).is(':checked') == true) {
+        //            $(this).data('initialValue', 1);
+        //        }
+        //        else {
+        //            $(this).data('initialValue', 0);
+        //        }
+        //    }
+        //    else {
+        //        $(this).data('initialValue', $(this).val());
+        //    }
+        //});
+        //var prevDrop = $('#ddlTrains').val();
+
+        if ($(this).prop("checked")) {
+            $('#anion2div').show();
+            $('#txtUpdateVessel3').val("True");
+            $('#txtNum_beds_anion').val("2");
+        } else {
+            $('#anion2div').hide();
+            $('#txtUpdateVessel3').val("False");
+            $('#txtNum_beds_anion').val("1");
+        }
+    });
+
+    //Auto complete cation1 Start
+    $("#txtResinProductModelCatBed1").autocomplete({
+        change: function () {
+
+            $("#ResinModel0").val($("#txtResinProductModelCatBed1").val())
+        },
+        source: function (request, response) {
+            if (autocomplete) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("Autocomplete", "ClientDatabase"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                            $('#lblErrorCB1').hide();
+                            $('#lblErrorCB1Invalid').hide();                            
+                            $("#ResignDetailsCatBed1").show();
+                        }
+                        //alert('success');
+                    },
+                    error: function (xhr) {
+
+                        window.location.href = "/ClientDatabase/Errorview";
+                    }
+                });
+                response(customer);
+            }
+            else {
+                autocomplete = true;
+            }
+        },
+        select: function (event, ui) {
+
+            //fill selected customer details on form
+            //alert(ui.item.value);
+
+            $('#ResignDetailsCatBed1').show();
+            $("#ResignDetailsCatBed1").html(ui.item.value);
+            var manufacturer = ui.item.value.split('(');
+            var manufacturer1 = manufacturer[1].split(')');
+            $('#txtResinProductModelCatBed1').val("");
+            $("#txtResinProductModelCatBed1").val(manufacturer1[0]);
+            $('#txtResinProductModelCatBed1R').val("");
+            $("#txtResinProductModelCatBed1R").val(manufacturer1[0]);
+
+        },
+        select: function (event, ui) {
+            //$("#AutoCompleteTextbox").val("");
+            var manufacturer2 = ui.item.value.split('(');
+            var manufacturer3 = manufacturer2[1].split(')');
+            $('#ResignDetailsCatBed1').show();
+            $("#ResignDetailsCatBed1").html(ui.item.value);
+            $('#txtResinProductModelCatBed1').val("");
+            $("#txtResinProductModelCatBed1").val(manufacturer3[0]);
+            return false;
+        },
+    });
+
+    //Auto Complete Cation1 End
+
+    //Auto complete cation2 start
+    $("#txtResinProductModelCatBed2").autocomplete({
+        change: function () {
+
+            $("#ResinModel2").val($("#txtResinProductModelCatBed2").val())
+        },
+        source: function (request, response) {
+            var customer = new Array();
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("Autocomplete", "ClientDatabase"))",
+                data: { "term": request.term },
+                success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        $('#lblErrorCB2').hide();
+                        $('#lblErrorCB2Invalid').hide();
+                        $("#ResignDetailsCatBed2").show();
+                    }
+                    //alert('success');
+                },
+                error: function (xhr) {
+
+                    window.location.href = "/ClientDatabase/Errorview";
+                }
+            });
+            response(customer);
+        },
+        select: function (event, ui) {
+
+            //fill selected customer details on form
+            //alert(ui.item.value);
+
+            $('#ResignDetailsCatBed2').show();
+            $("#ResignDetailsCatBed2").html(ui.item.value);
+            var manufacturer = ui.item.value.split('(');
+            var manufacturer1 = manufacturer[1].split(')');
+            $('#txtResinProductModelCatBed2').val("");
+            $("#txtResinProductModelCatBed2").val(manufacturer1[0]);
+            //$('#txtResinProductModelCatBed2R').val("");
+            //$("#txtResinProductModelCatBed2R").val(manufacturer1[0]);
+
+        },
+        select: function (event, ui) {
+            //$("#AutoCompleteTextbox").val("");
+            var manufacturer2 = ui.item.value.split('(');
+            var manufacturer3 = manufacturer2[1].split(')');
+            $('#ResignDetailsCatBed2').show();
+            $("#ResignDetailsCatBed2").html(ui.item.value);
+            $('#txtResinProductModelCatBed2').val("");
+            $("#txtResinProductModelCatBed2").val(manufacturer3[0]);
+            return false;
+        },
+    });
+    //Auto complete cation2 end
+
+    //Auto complete anion bed1 start
+    $("#txtResinProductModelCatBed11").autocomplete({
+        change: function () {
+
+            $("#ResinModel11").val($("#txtResinProductModelCatBed11").val())
+        },
+        source: function (request, response) {
+            var customer = new Array();
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("Autocomplete", "ClientDatabase"))",
+                data: { "term": request.term },
+                success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        $('#lblErrorCB11').hide();
+                        $('#lblErrorCB11Invalid').hide();
+                        $("#ResignDetailsCatBed11").show();
+                    }
+                    //alert('success');
+                },
+                error: function (xhr) {
+
+                    window.location.href = "/ClientDatabase/Errorview";
+                }
+            });
+            response(customer);
+        },
+        select: function (event, ui) {
+
+            //fill selected customer details on form
+            //alert(ui.item.value);
+
+            $('#ResignDetailsCatBed11').show();
+            $("#ResignDetailsCatBed11").html(ui.item.value);
+            var manufacturer = ui.item.value.split('(');
+            var manufacturer1 = manufacturer[1].split(')');
+            $('#txtResinProductModelCatBed11').val("");
+            $("#txtResinProductModelCatBed11").val(manufacturer1[0]);
+            //$('#txtResinProductModelCatBed2R').val("");
+            //$("#txtResinProductModelCatBed2R").val(manufacturer1[0]);
+
+        },
+        select: function (event, ui) {
+            //$("#AutoCompleteTextbox").val("");
+            var manufacturer2 = ui.item.value.split('(');
+            var manufacturer3 = manufacturer2[1].split(')');
+            $('#ResignDetailsCatBed11').show();
+            $("#ResignDetailsCatBed11").html(ui.item.value);
+            $('#txtResinProductModelCatBed11').val("");
+            $("#txtResinProductModelCatBed11").val(manufacturer3[0]);
+            return false;
+        },
+    });
+    //Auto complete anion bed1 end
+
+    $('#Yes_Navigate').off("click").on("click", function (ev) {
+        $('#TrainChangeConfirm').modal('hide');
+        $("#trainForm").submit();
+        ev.preventDefault();
+
+        $(':input').each(function () {
+            $(this).data('initialValue', null);
+            if ($(this).is(':checkbox')) {
+                if ($(this).is(':checked') == true) {
+                    $(this).data('initialValue', 1);
+                }
+                else {
+                    $(this).data('initialValue', 0);
+                }
+            }
+            else {
+                $(this).data('initialValue', $(this).val());
+            }
+        });
+        var prevDrop = $('#ddlTrains').val();
+
+        
+        return false;
+
+    });
+
+    $('#No_Navigate').off("click").on("click", function () {
+        $('#TrainChangeConfirm').modal('hide');
+        if ($('#trainForm').valid()) {
+            $("#loadingTrain").show();
+            $(".sysConfig_panel .panel-body").css("overflow", "hidden");
+            $.ajax({
+                url: '/ClientDatabase/TrainSettingsWithoutRedirect',
+                type: 'post',
+                dataType: 'json',
+                data: $('#trainForm').serialize(),
+                success: function () {
+                    $("#loadingTrain").hide();
+                    $(".sysConfig_panel .panel-body").css("overflow", "auto");
+
+                    $(this).data('initialValue', null);
+                    $(':input').each(function () {
+                        if ($(this).is(':checkbox')) {
+                            if ($(this).is(':checked') == true) {
+                                $(this).data('initialValue', 1);
+                            }
+                            else {
+                                $(this).data('initialValue', 0);
+                            }
+                        }
+                        else {
+                            $(this).data('initialValue', $(this).val());
+                        }
+                    });
+
+                    var prevDrop = $('#ddlTrains').val();
+                    return false;
+                },
+                error: function () {
+                    $("#loadingTrain").hide();
+                    $(".sysConfig_panel .panel-body").css("overflow", "auto");
+                }
+            });
+        }
+    });
+
+    //$(document).on("click", "#btnSubmit", function (event) {
+    //    $('#TrainChangeConfirm').modal('show');
+    //});
+
+
+    //Auto complete anion bed2 start
+    $("#txtResinProductModelCatBed3").autocomplete({
+        change: function () {
+
+            $("#ResinModel3").val($("#txtResinProductModelCatBed3").val())
+        },
+        source: function (request, response) {
+            var customer = new Array();
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("Autocomplete", "ClientDatabase"))",
+                data: { "term": request.term },
+                success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        $('#lblErrorCB3').hide();
+                        $('#lblErrorCB3Invalid').hide();
+                        $("#ResignDetailsCatBed3").show();
+                    }
+                    //alert('success');
+                },
+                error: function (xhr) {
+
+                    window.location.href = "/ClientDatabase/Errorview";
+                }
+            });
+            response(customer);
+        },
+        select: function (event, ui) {
+
+            //fill selected customer details on form
+            //alert(ui.item.value);
+
+            $('#ResignDetailsCatBed3').show();
+            $("#ResignDetailsCatBed3").html(ui.item.value);
+            var manufacturer = ui.item.value.split('(');
+            var manufacturer1 = manufacturer[1].split(')');
+            $('#txtResinProductModelCatBed3').val("");
+            $("#txtResinProductModelCatBed3").val(manufacturer1[0]);
+            //$('#txtResinProductModelCatBed2R').val("");
+            //$("#txtResinProductModelCatBed2R").val(manufacturer1[0]);
+
+        },
+        select: function (event, ui) {
+            //$("#AutoCompleteTextbox").val("");
+            var manufacturer2 = ui.item.value.split('(');
+            var manufacturer3 = manufacturer2[1].split(')');
+            $('#ResignDetailsCatBed3').show();
+            $("#ResignDetailsCatBed3").html(ui.item.value);
+            $('#txtResinProductModelCatBed3').val("");
+            $("#txtResinProductModelCatBed3").val(manufacturer3[0]);
+            return false;
+        },
+    });
+
+    $(':input').each(function () {
+        if ($(this).is(':checkbox')) {
+
+            if ($(this).is(':checked') == true) {
+                $(this).data('initialValue', 1);
+            }
+            else {
+                $(this).data('initialValue', 0);
+            }
+        }
+        else {
+            $(this).data('initialValue', $(this).val());
+        }
+    });
+
+    var prevDrop = $('#ddlTrains').val();
+
+    //Auto complete anion bed2 end
+</script>

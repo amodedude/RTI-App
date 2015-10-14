@@ -1,0 +1,1 @@
+ALTER TABLE vessel ADD price_per_cuft decimal(4,2) not null;

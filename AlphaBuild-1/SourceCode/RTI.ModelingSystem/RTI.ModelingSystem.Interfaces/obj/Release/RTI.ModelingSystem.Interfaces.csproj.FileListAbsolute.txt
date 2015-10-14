@@ -1,0 +1,7 @@
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Interfaces.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Interfaces.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Core.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Core.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\obj\Release\RTI.ModelingSystem.Interfaces.csprojResolveAssemblyReference.cache
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\obj\Release\RTI.ModelingSystem.Interfaces.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Interfaces\obj\Release\RTI.ModelingSystem.Interfaces.pdb

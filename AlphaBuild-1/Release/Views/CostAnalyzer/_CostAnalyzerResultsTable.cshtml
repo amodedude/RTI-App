@@ -1,0 +1,242 @@
+﻿@model RTI.ModelingSystem.Core.Models.CostAnalyzerResult
+<div class="col-xs-12 table_title">Cost Analysis</div>
+<div class="col-xs-12 nopad_l-r statlist brdr_t">
+    <div class="left">Week: <span>@Html.DisplayFor(model => model.WeekNumber)</span></div>
+
+</div>
+
+@if (Model.Conductivity != null)
+{
+    if (Model.ConductivityColor == "RED")
+    {
+        <div class="col-xs-12 nopad_l-r statlist">
+            <div class="left">Conductivity:<span class="today_red">@Html.DisplayFor(model => model.Conductivity)</span></div>
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-12 nopad_l-r statlist">
+            <div class="left">Conductivity:<span>@Html.DisplayFor(model => model.Conductivity)</span></div>
+        </div>
+    }
+}
+        @*<div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Conductivity: <span>@Html.DisplayFor(model => model.Conductivity)</span></div>
+
+            </div>*@
+
+        <div class="col-xs-12 nopad_l-r statlist_title">
+            <div class="left">&nbsp;</div>
+            <div class="right">Without cleaning</div>
+            <div class="right">With cleaning</div>
+        </div>
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Salt Split</div>
+                @if (Model.SaltSplitAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.SaltSplitAfter)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                @if (Model.SaltSplitBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.SaltSplitBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Throughput</div>
+                @if (Model.ThroughputBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.ThroughputBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                @if (Model.ThroughputAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.ThroughputAfter)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Total Weekly Cost</div>
+                @if (Model.TotalWeeklyCostAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.TotalWeeklyCostAfter)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                @if (Model.TotalWeeklyCostBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.TotalWeeklyCostBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+
+                <div class="dotted"></div>
+            </div>
+        }
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Regen Weekly Cost</div>
+                @if (Model.RegenWeeklyCostAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.RegenWeeklyCostAfter)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                @if (Model.RegenWeeklyCostBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.RegenWeeklyCostBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Cleaning Cost</div>
+                @if (Model.CleaningCostAfter != null)
+                {
+                    <div class="right today_green">@Html.DisplayFor(model => model.CleaningCostAfter)</div>
+                }
+                else
+                {
+
+                }
+                @if (Model.CleaningCostBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.CleaningCostBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Replacement Cost</div>
+
+                @if (Model.ReplacementCostAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.ReplacementCostAfter)</div>
+                }
+                else
+                {
+
+                }
+                @if (Model.ReplacementCostBefore != null)
+                {
+                    <div class="right today_red">@Html.DisplayFor(model => model.ReplacementCostBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Total Ops Cost</div>
+                @if (Model.TotalOpsCostAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.TotalOpsCostAfter)</div>
+                }
+                else
+                {
+
+                }
+                @if (Model.TotalOpsCostBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.TotalOpsCostBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+
+        @if (Model != null)
+        {
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Avg Cost/Gal</div>
+                @if (Model.AvgCostPerGalAfter != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.AvgCostPerGalAfter)</div>
+                }
+                else
+                {
+
+                }
+                @if (Model.AvgCostPerGalBefore != null)
+                {
+                    <div class="right">@Html.DisplayFor(model => model.AvgCostPerGalBefore)</div>
+                }
+                else
+                {
+                    <div class="right">-</div>
+                }
+                <div class="dotted"></div>
+            </div>
+        }
+
+        @*<div class="col-xs-12 nopad_l-r statlist_title">
+                <div class="left">&nbsp;</div>
+                <div class="right">Before</div>
+                <div class="right">After</div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Current conductivity</div>
+                <div class="right">after data</div>
+                <div class="right today_red">before data</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">% Above mean</div>
+                <div class="right">after data</div>
+                <div class="right today_red">before data</div>
+                <div class="dotted"></div>
+            </div>*@

@@ -1,0 +1,351 @@
+﻿@model RTI.ModelingSystem.Web.Models.Trainsettings
+@{
+    ViewBag.Title = "System Config";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>System Config</h2>
+@*@using (Html.BeginForm("UpdateSystemSettings", "ClientDatabase", FormMethod.Post))*@
+@using (Html.BeginForm())
+{
+    <body>
+
+        <div>
+            <table>
+                <tr>
+                    @Html.DropDownList("ConfigDropDown", new List<SelectListItem>
+                                    {
+                                         new SelectListItem{ Text="Train Settings", Value = "2" },
+                                        new SelectListItem{ Text="System Settings", Value = "1" },
+                                     })
+                </tr>
+                <tr>
+                    <td width="20%">
+                        @Html.TextBoxFor(model => model.Train.name, new { @id = "txtTrainName", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.Train.num_beds_cation, new { @id = "txtTrainCation", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.Train.num_beds_anion, new { @id = "txtTrainAnion", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.Train.number, new { @id = "txtTrainNumber", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.Train.using_manifold, new { @id = "txtTrainusing_manifold", @style = "display:none;" })
+                    @if ("NewCust" != "NewCust")
+                        { 
+                            @Html.DropDownList("ConfigDropDown", new List<SelectListItem>
+                                {
+                                    new SelectListItem{ Text="Train 1", Value = "1" },
+                                    new SelectListItem{ Text="Train 2", Value = "2" },
+                                })
+                        }
+                        @Html.DropDownListFor(model => model.Train.trainID, Model.TrianNoList, new { @id = "TrainId" })
+                        <p>
+                            Dual
+                        </p>
+                        <p>
+                            @Html.CheckBoxFor(model => model.cation) Cation
+                            @*@Html.CheckBoxFor(item => item.cation)
+                                @Html.DisplayFor(item => item.cation)*@
+                        </p>
+                        <p>
+                            @Html.CheckBoxFor(model => model.anion) Anion
+                        </p>
+                        <p>
+                            @Html.Label(" Gal/mo per train")
+                        </p>
+                        <p>
+                            @Html.TextBoxFor(model => model.Train.gpm)
+                            @Html.ValidationMessageFor(model => model.Train.gpm, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label(" Regens /mo")
+                        </p>
+                        <p>
+                            @Html.TextBoxFor(model => model.Train.regens_per_month)
+                            @Html.ValidationMessageFor(model => model.Train.regens_per_month, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label(" hrs for regeneration")
+                        </p>
+                        <p>
+                            @Html.TextBoxFor(model => model.Train.regen_duration)
+                            @Html.ValidationMessageFor(model => model.Train.regen_duration, "", new { @class = "text-danger" })
+                        </p>
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(model => model.VesslsList[0].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                        @*@Html.TextBoxFor(model => model.VesslsList[0].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                        @Html.TextBoxFor(model => model.VesslsList[0].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[0].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[0].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[0].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[0].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+
+
+                        <h4>Cation bed#1</h4>
+                        <p>
+                            @Html.Label("Vessel Name")
+                            @*@Html.TextBox("VesselName", Model.VesslsList[0].name)*@
+                            @Html.TextBoxFor(model => model.VesslsList[0].name)
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].name, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Purchase date")
+                            @Html.TextBoxFor(model => model.VesslsList[0].date_replaced, new { id = "cation1" })
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].date_replaced, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Replace")
+                            @Html.TextBoxFor(model => model.VesslsList[0].replacement_plan)
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].replacement_plan, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("ft3 of Resin")
+                            @Html.TextBoxFor(model => model.VesslsList[0].num_regens)
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].num_regens, "", new { @class = "text-danger" })
+                            @Html.Label("lb/ft3 of Acid")
+                            @Html.TextBoxFor(model => model.VesslsList[0].lbs_chemical)
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].lbs_chemical, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Total Organic Carbon")
+                        </p>
+                        <p>
+                            @Html.TextBoxFor(model => model.VesslsList[0].toc)
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].toc, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Throughput")
+                            @Html.TextBoxFor(model => model.VesslsList[0].throughput)
+                            @Html.ValidationMessageFor(model => model.VesslsList[0].throughput, "", new { @class = "text-danger" })
+
+                        </p>
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.VesslsList[1].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                        @*@Html.TextBoxFor(model => model.VesslsList[1].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                        @Html.TextBoxFor(model => model.VesslsList[1].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[1].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[1].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[1].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                        @Html.TextBoxFor(model => model.VesslsList[1].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                        <h4>Anion bed#1</h4>
+                        <p>
+                            @Html.Label("Vessel Name")
+                            @Html.TextBoxFor(model => model.VesslsList[1].name)
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].name, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Purchase date")
+                            @Html.TextBoxFor(model => model.VesslsList[1].date_replaced, new { id = "anion1" })
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].date_replaced, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Replace")
+                            @Html.TextBoxFor(model => model.VesslsList[1].replacement_plan)
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].replacement_plan, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("ft3 of Resin")
+                            @Html.TextBoxFor(model => model.VesslsList[1].num_regens)
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].num_regens, "", new { @class = "text-danger" })
+                            @Html.Label("lb/ft3 of Acid")
+                            @Html.TextBoxFor(model => model.VesslsList[1].lbs_chemical)
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].lbs_chemical, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Total Organic Carbon")
+                        </p>
+                        <p>
+                            @Html.TextBoxFor(model => model.VesslsList[1].toc)
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].toc, "", new { @class = "text-danger" })
+                        </p>
+                        <p>
+                            @Html.Label("Throughput")
+                            @Html.TextBoxFor(model => model.VesslsList[1].throughput)
+                            @Html.ValidationMessageFor(model => model.VesslsList[1].throughput, "", new { @class = "text-danger" })
+
+                        </p>
+                    </td>
+
+                    @if ("NewCust" != "NewCust")
+                    {
+                        <td>
+                            @Html.TextBoxFor(model => model.VesslsList[2].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                            @*@Html.TextBoxFor(model => model.VesslsList[2].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                            @Html.TextBoxFor(model => model.VesslsList[2].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[2].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[2].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[2].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[2].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                            <h4>Cation bed#2</h4>
+                            <p>
+                                @Html.Label("Vessel Name")
+                                @Html.TextBoxFor(model => model.VesslsList[2].name)
+                            </p>
+                            <p>
+                                @Html.Label("Purchase date")
+                                @Html.TextBoxFor(model => model.VesslsList[2].date_replaced, new { id = "cation2" })
+                            </p>
+                            <p>
+                                @Html.Label("Replace")
+                                @Html.TextBoxFor(model => model.VesslsList[2].replacement_plan)
+                            </p>
+                            <p>
+                                @Html.Label("ft3 of Resin")
+                                @Html.TextBoxFor(model => model.VesslsList[2].num_regens)
+                                @Html.Label("lb/ft3 of Acid")
+                                @Html.TextBoxFor(model => model.VesslsList[2].lbs_chemical)
+                            </p>
+                            <p>
+                                @Html.Label("Total Organic Carbon")
+                            </p>
+                            <p>
+                                @Html.TextBoxFor(model => model.VesslsList[2].toc)
+                            </p>
+                            <p>
+                                @Html.Label("Throughput")
+                                @Html.TextBoxFor(model => model.VesslsList[2].throughput)
+
+                            </p>
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.VesslsList[3].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                            @*@Html.TextBoxFor(model => model.VesslsList[3].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                            @Html.TextBoxFor(model => model.VesslsList[3].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[3].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[3].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[3].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                            @Html.TextBoxFor(model => model.VesslsList[3].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                            <h4>Anion bed#2</h4>
+                            <p>
+                                @Html.Label("Vessel Name")
+                                @Html.TextBoxFor(model => model.VesslsList[3].name)
+                            </p>
+                            <p>
+                                @Html.Label("Purchase date")
+                                @Html.TextBoxFor(model => model.VesslsList[3].date_replaced, new { id = "anion2" })
+                            </p>
+                            <p>
+                                @Html.Label("Replace")
+                                @Html.TextBoxFor(model => model.VesslsList[3].replacement_plan)
+                            </p>
+                            <p>
+                                @Html.Label("ft3 of Resin")
+                                @Html.TextBoxFor(model => model.VesslsList[3].num_regens)
+                                @Html.Label("lb/ft3 of Acid")
+                                @Html.TextBoxFor(model => model.VesslsList[3].lbs_chemical)
+                            </p>
+                            <p>
+                                @Html.Label("Total Organic Carbon")
+                            </p>
+                            <p>
+                                @Html.TextBoxFor(model => model.VesslsList[3].toc)
+                            </p>
+                            <p>
+                                @Html.Label("Throughput")
+                                @Html.TextBoxFor(model => model.VesslsList[3].throughput)
+
+                            </p>
+                        </td>
+                    }
+                    else
+                    {
+                        if (Model.VesslsList.Count() > 1)
+                        {
+                            <td>
+                                @Html.TextBoxFor(model => model.VesslsList[2].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                                @*@Html.TextBoxFor(model => model.VesslsList[2].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                                @Html.TextBoxFor(model => model.VesslsList[2].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[2].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[2].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[2].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[2].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                                <h4>Cation bed#2</h4>
+                                <p>
+                                    @Html.Label("Vessel Name")
+                                    @Html.TextBoxFor(model => model.VesslsList[2].name)
+                                </p>
+                                <p>
+                                    @Html.Label("Purchase date")
+                                    @Html.TextBoxFor(model => model.VesslsList[2].date_replaced, new { id = "cation2" })
+                                </p>
+                                <p>
+                                    @Html.Label("Replace")
+                                    @Html.TextBoxFor(model => model.VesslsList[2].replacement_plan)
+                                </p>
+                                <p>
+                                    @Html.Label("ft3 of Resin")
+                                    @Html.TextBoxFor(model => model.VesslsList[2].num_regens)
+                                    @Html.Label("lb/ft3 of Acid")
+                                    @Html.TextBoxFor(model => model.VesslsList[2].lbs_chemical)
+                                </p>
+                                <p>
+                                    @Html.Label("Total Organic Carbon")
+                                </p>
+                                <p>
+                                    @Html.TextBoxFor(model => model.VesslsList[2].toc)
+                                </p>
+                                <p>
+                                    @Html.Label("Throughput")
+                                    @Html.TextBoxFor(model => model.VesslsList[2].throughput)
+
+                                </p>
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.VesslsList[3].bed_number, new { @id = "txtTrainName1", @style = "display:none;" })
+                                @*@Html.TextBoxFor(model => model.VesslsList[3].size, new { @id = "txtTrainName2", @style = "display:none;" })*@
+                                @Html.TextBoxFor(model => model.VesslsList[3].vessel_customerID, new { @id = "txtTrainName3", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[3].vessel_number, new { @id = "txtTrainNam4e", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[3].vesselID, new { @id = "txtTrainName5", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[3].resin_data_product_id, new { @id = "txtTrainName6", @style = "display:none;" })
+                                @Html.TextBoxFor(model => model.VesslsList[3].train_trainID, new { @id = "txtTrainName7", @style = "display:none;" })
+                                <h4>Anion bed#2</h4>
+                                <p>
+                                    @Html.Label("Vessel Name")
+                                    @Html.TextBoxFor(model => model.VesslsList[3].name)
+                                </p>
+                                <p>
+                                    @Html.Label("Purchase date")
+                                    @Html.TextBoxFor(model => model.VesslsList[3].date_replaced, new { id = "anion2" })
+                                </p>
+                                <p>
+                                    @Html.Label("Replace")
+                                    @Html.TextBoxFor(model => model.VesslsList[3].replacement_plan)
+                                </p>
+                                <p>
+                                    @Html.Label("ft3 of Resin")
+                                    @Html.TextBoxFor(model => model.VesslsList[3].num_regens)
+                                    @Html.Label("lb/ft3 of Acid")
+                                    @Html.TextBoxFor(model => model.VesslsList[3].lbs_chemical)
+                                </p>
+                                <p>
+                                    @Html.Label("Total Organic Carbon")
+                                </p>
+                                <p>
+                                    @Html.TextBoxFor(model => model.VesslsList[3].toc)
+                                </p>
+                                <p>
+                                    @Html.Label("Throughput")
+                                    @Html.TextBoxFor(model => model.VesslsList[3].throughput)
+
+                                </p>
+                            </td>
+                        }
+                    }
+                </tr>
+            </table>
+            <input type="submit" name="update" value="Update System" />
+
+            @Html.ActionLink("cancel, don't update", "", "")
+        </div>
+    </body>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#cation1').datepicker();
+        $('#anion1').datepicker();
+        $('#cation2').datepicker();
+        $('#anion2').datepicker();
+    });
+
+</script>
+
+

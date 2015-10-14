@@ -1,0 +1,165 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSummaryViewModel
+
+@*<script src="~/Scripts/Customer.js"></script>*@
+<script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/modules/exporting.js"></script>
+
+@{
+    ViewBag.Title = "CostAnalyzer";
+}
+<div class="container" style="overflow:hidden;">
+    <!-- BREADCRUMB -->
+    <ol class="breadcrumb">
+        <li><a href="/ClientDatabase/Dashboard">Dashboard</a></li>
+        <li><a href="/PredictiveSystem/PredictiveSystemPerformance">Predictive System Performance</a></li>
+        <li class="active">Cost Analyzer</li>
+    </ol>
+    <!-- Customer info panel-->
+    <div class="row">
+        <!-- Customer info-->
+        <div class="col-xs-6">
+            @if (Model != null && Model.CustomerDetails != null)
+            {
+                <div class="custinfo_panel">
+                    <div class="cust_name">
+                        <div class="cust_name_trim" title="@Model.CustomerDetails.name">@Html.DisplayFor(model => model.CustomerDetails.name)</div>
+                    </div>
+                    <div class="cust_id">
+                        <span>(</span>@for (int i = 0; i < 12 - (Model.CustomerDetails.customerID).ToString().Length; i++)
+                        {
+                            if (i == 3 || i == 7)
+                            {
+                                <span>-</span>
+                            }
+                            else
+                            {
+                                <span>0</span>
+                            }
+
+                        }<span>@Html.DisplayFor(model => model.CustomerDetails.customerID)</span><span>)</span>
+                    </div>
+                    <div class="plant_name">@Html.DisplayFor(model => model.CustomerDetails.plant) Plant</div>
+                    <div class="cust_address">@Html.DisplayFor(model => model.CustomerDetails.city), @Html.DisplayFor(model => model.CustomerDetails.state)</div>
+                </div>
+            }
+
+        </div>
+
+        <!-- System summary-->
+        <div class="col-xs-6">
+
+            <div class="syssummary_panel">
+                <div class="syssummary_panel_heading">System summary</div>
+                @if (Model != null && Model.CustomerDetails != null && Model.WaterSourceOne != null)
+                {
+                    <div class="syssummary_panel_cont">
+                        <ul class="col-xs-6">
+                            <li>
+                                Train information <br>
+                                <span>
+                                    @if (Model.Trains[0].using_manifold == "NO")
+                                    {
+
+                                        @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - No Manifold</span>
+
+
+                                    }
+                                    else
+                                    {
+
+                                        @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - Manifold</span>
+
+
+                                    }
+                                </span>
+                            </li>
+                            <li><span>$@Html.DisplayFor(model => model.CustomerDetails.caustic_price) / lb</span> (Caustic)</li>
+                            <li><span>$@Html.DisplayFor(model => model.CustomerDetails.acid_price) / lb </span> (Acid)</li>
+                        </ul>
+                        <ul class="col-xs-6">
+                            <li>
+                                Water source(s)<br>
+                                <span>1: @Html.DisplayFor(model => model.WaterSourceOne.full_site_name)</span> <br>
+                                @if (Model != null && Model.WaterSourceTwo != null)
+                                {
+                                    <span>2: @Html.DisplayFor(model => model.WaterSourceTwo.full_site_name)</span>
+
+                                }
+
+                            </li>
+                            <li>
+                                Water demand<br>
+                                <span>@string.Format("{0:n0}", Model.CustomerDetails.demand) gal / mo</span>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Graph Panel-->
+    <div class="row">
+        <!-- Graphs Left-->
+        <div class="col-xs-8 graph_options">
+            <h4>
+                Cost Analyzer
+                <a id="GetCostSettings" data-target="#costSettings" data-toggle="modal" href="#"><span aria-hidden="true" class="glyphicon glyphicon-cog"></span> Cost settings</a>
+            </h4>
+            <div class="well graph_container">
+                <div class="graph_panel" id="graph_CostAnalyzer" style="min-height:400px !important;">
+
+                </div>
+            </div>
+            @*<div class="well graph_container">
+                    <h5>Yazu River Conductiviy</h5>
+                    <div class="graph_panel"><img class="img-responsive" src="~/Content/images/Conductivity.png" width="700" height="346" alt="" /></div>
+                </div>*@
+        </div>
+
+        <!-- Graphs Right-->
+        <div class="col-xs-4 rightpanel costanalyse">
+            <div id="CumulativeSavings"></div>
+            <div id="CostAnalyzerResultsTable">
+                @*<div class="loader"></div>*@
+            </div>
+            
+            @*<div class="col-xs-12 nopad_l-r statlist brdr_t">
+                <div class="left">Week: <span>data</span></div>
+                
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Week: <span>data</span></div>
+                
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist_title">
+                <div class="left">&nbsp;</div>
+                <div class="right">Before</div>
+                <div class="right">After</div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Current conductivity</div>
+                <div class="right">after data</div>
+                <div class="right today_red">before data</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">% Above mean</div>
+                <div class="right">after data</div>
+                <div class="right today_red">before data</div>
+                <div class="dotted"></div>
+            </div>*@
+        </div>
+        </div>
+</div>
+@*<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
+<div class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" id="costSettings" data-backdrop="static">
+</div>
+
+<script src="~/Scripts/CostAnalyzer.js"></script>

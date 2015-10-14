@@ -1,0 +1,57 @@
+﻿
+@model RTI.ModelingSystem.Core.Models.SystemConditions
+
+<div class="col-xs-12 table_title">System conditions <span class="pull-right loader_xs"></span></div>
+<div class="col-xs-12 nopad_l-r statlist_title">
+    <div class="left">&nbsp;</div>
+    <div class="right">Before</div>
+    <div class="right">After</div>    
+</div>
+
+<div class="col-xs-12 nopad_l-r statlist">
+    <div class="left">Salt Split today</div>
+    <div class="right today_red_system_conditions">@Html.DisplayFor(model => model.SaltSplitTodayAfter) Kgr/ft<sup>3</sup></div>
+    @*<div class="right today_red">@Html.DisplayFor(model => model.SaltSplitTodayBefore) Kgr/ft<sup>3</sup></div>*@
+    <div class="right today_blue">@Html.DisplayFor(model => model.SaltSplitTodayBefore) Kgr/ft<sup>3</sup></div>
+    @*@if (Model.SaltSplitTodayBefore < 18)
+{
+    <div class="right today_blue">@Html.DisplayFor(model => model.SaltSplitTodayBefore) Kgr/ft<sup>3</sup></div>
+}
+else if (Model.SaltSplitTodayBefore < 20)
+{
+        <div class="right today_orange">@Html.DisplayFor(model => model.SaltSplitTodayBefore) Kgr/ft<sup>3</sup></div>
+    }
+    else
+    {
+        <div class="right today_green">@Html.DisplayFor(model => model.SaltSplitTodayBefore) Kgr/ft<sup>3</sup></div>
+    }*@    
+    <div class="dotted"></div>
+</div>
+
+<div class="col-xs-12 nopad_l-r statlist">
+    <div class="left">Regen time (hrs)</div>
+    <div class="right">@Html.DisplayFor(model => model.RegenTimeAverageAfter)</div>
+    <div class="right">@Html.DisplayFor(model => model.RegenTimeAverageBefore)</div>
+    <div class="dotted"></div>
+</div>
+
+<div class="col-xs-12 nopad_l-r statlist">
+    <div class="left">Regens per week (avg)</div>
+    <div class="right">@Html.DisplayFor(model => model.RegensPerWeekAverageAfter)</div>
+    <div class="right">@Html.DisplayFor(model => model.RegensPerWeekAverageBefore)</div>
+    <div class="dotted"></div>
+</div>
+
+<div class="col-xs-12 nopad_l-r statlist">
+    <div class="left">Hours per run (avg)</div>
+    <div class="right">@Html.DisplayFor(model => model.HoursPerRunAverageAfter)</div>
+    <div class="right">@Html.DisplayFor(model => model.HoursPerRunAverageBefore)</div>
+    <div class="dotted"></div>
+</div>
+
+<div class="col-xs-12 nopad_l-r statlist">
+    <div class="left">Throughput (avg in Gallons)</div>
+    <div class="right">@Model.ThroughputAverageAfter.ToString("n0")</div>
+    <div class="right">@Model.ThroughputAverageBefore.ToString("n0")</div>
+    <div class="dotted"></div>
+</div>

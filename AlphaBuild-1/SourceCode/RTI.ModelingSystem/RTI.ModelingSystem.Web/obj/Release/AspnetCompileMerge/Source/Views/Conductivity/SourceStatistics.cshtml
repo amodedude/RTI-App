@@ -1,0 +1,76 @@
+﻿@model RTI.ModelingSystem.Core.Models.ConductivityViewModel
+
+@{
+    ViewBag.Title = "SourceStatistics";
+}
+
+<h2>SourceStatistics</h2>
+
+<div>
+
+        <div>
+            
+            @Html.RadioButtonFor(model => model.IsFemale, "true") Male
+            @Html.RadioButtonFor(model => model.IsFemale, "false") Female
+
+        </div>
+        <h4>Source One Statistics</h4>
+
+            @Html.LabelFor(model=>model.Source1Statistics.CurrentConductivity)
+            <span>@Model.Source1Statistics.CurrentConductivity</span><br />
+    
+            @Html.LabelFor(model=>model.Source1Statistics.PercentAboveMean)
+            <span>@Model.Source1Statistics.PercentAboveMean</span><br />
+    
+            @Html.LabelFor(model => model.Source1Statistics.StandardDeviation)
+            <span>@Model.Source1Statistics.StandardDeviation</span><br />
+    
+            @Html.LabelFor(model => model.Source1Statistics.ArithmeticMean)
+            <span>@Model.Source1Statistics.ArithmeticMean</span><br />
+    
+            @Html.LabelFor(model => model.Source1Statistics.MaxConductivity)
+            <span>@Model.Source1Statistics.MaxConductivity</span><br />
+    
+            @Html.LabelFor(model => model.Source1Statistics.MinConductivity)
+            <span>@Model.Source1Statistics.MinConductivity</span><br />
+    
+            @Html.LabelFor(model => model.Source1Statistics.MedianValue)
+            <span>@Model.Source1Statistics.MedianValue</span><br />
+    
+            @Html.LabelFor(model => model.Source1Statistics.ModalValue)
+            <span>@Model.Source1Statistics.ModalValue</span><br />
+
+      <h4>Source Two Statistics</h4>
+
+            @Html.LabelFor(model => model.Source2Statistics.CurrentConductivity)
+            <span>@Model.Source2Statistics.CurrentConductivity</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.PercentAboveMean)
+            <span>@Model.Source2Statistics.PercentAboveMean</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.StandardDeviation)
+            <span>@Model.Source2Statistics.StandardDeviation</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.ArithmeticMean)
+            <span>@Model.Source2Statistics.ArithmeticMean</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.MaxConductivity)
+            <span>@Model.Source2Statistics.MaxConductivity</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.MinConductivity)
+            <span>@Model.Source2Statistics.MinConductivity</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.MedianValue)
+            <span>@Model.Source2Statistics.MedianValue</span><br />
+
+            @Html.LabelFor(model => model.Source2Statistics.ModalValue)
+            <span>@Model.Source2Statistics.ModalValue</span><br />
+
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

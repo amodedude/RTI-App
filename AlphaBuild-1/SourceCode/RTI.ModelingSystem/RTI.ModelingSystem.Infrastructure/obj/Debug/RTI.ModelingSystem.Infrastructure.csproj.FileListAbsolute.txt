@@ -1,0 +1,14 @@
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\obj\Debug\RTI.ModelingSystem.Infrastructure.csprojResolveAssemblyReference.cache
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Infrastructure.dll.config
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Infrastructure.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Infrastructure.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\EntityFramework.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\EntityFramework.SqlServer.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Core.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Interfaces.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Core.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\RTI.ModelingSystem.Interfaces.pdb
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\EntityFramework.xml
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\bin\Debug\EntityFramework.SqlServer.xml
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\obj\Debug\RTI.ModelingSystem.Infrastructure.dll
+D:\RTI\RTI.ModelingSystem\RTI.ModelingSystem.Infrastructure\obj\Debug\RTI.ModelingSystem.Infrastructure.pdb
