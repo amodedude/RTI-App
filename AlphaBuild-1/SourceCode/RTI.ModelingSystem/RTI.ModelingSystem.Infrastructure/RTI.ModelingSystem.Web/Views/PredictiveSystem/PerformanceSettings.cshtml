@@ -1,0 +1,160 @@
+﻿@model RTI.ModelingSystem.Core.Models.PerformanceSettings
+
+@*<script src="~/Scripts/jquery-2.1.4.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.3.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>*@
+<script src="~/Scripts/PerformanceSettings.js"></script>
+
+@*<div class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" id="performSettings" data-backdrop="static">*@
+<div class="modal-dialog modal_cust" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">Performance settings</h4>
+        </div>
+        <div class="modal-body">
+            @Html.TextBoxFor(m => m.ResinLifeExpectancy, new { @id="LifeExpectancy", @style="display:none"})
+            @Html.TextBoxFor(m => m.AverageResinAge, new { @id = "ResinAge", @style = "display:none" })
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.selectedTrain, Model.trainList, new { @id = "trainList", @class = "form-control" })
+                        @*<select class="form-control">
+                                <option>Train 1, Train 2</option>
+                                <option>Train 1</option>
+                                <option>Train 2</option>
+                            </select>*@
+                    </div>
+                </div>
+                <div class="col-xs-8 nopad_l-r"><div class="info">@Html.DisplayFor(m => m.Size) cu/ft of resin <br>@Html.DisplayFor(m => m.GPM) gpm</div></div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Resin life expectancy (weeks / years)</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="resinLifeExpectancySlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="resinLifeExpectancy"></label></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">RTI cleaning threshold</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="RTIcleaningThresholdSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="RTIcleaningThreshold"></label></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Avg resin age (weeks)</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="avgResinAgeSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="avgResinAge"></label></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Resin replacement level</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="resinReplacementLevelSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="resinReplacementLevel"></label></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">New resin salt split</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="newResinSaltSplitSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="newResinSaltSplit"></label></div>
+                        <div class="checkbox mar_0 pad_0">
+                            <label class="quest">
+                                <input type="checkbox" value="mb_1" id="replaceResin">Don't replace resin
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Source predictibilty</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="sourcePredictibiltySlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="sourcePredictibilty"></label></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Regen effectiveness</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="regenEffectivenessSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="regenEffectiveness"></label></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1"># of iterations</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="noOfIterationsSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="noOfIterations"></label></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Maximum degradation</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="maxDegradationSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="maxDegradation"></label></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Standard deviation interval</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="standardDeviationIntervalSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="standardDeviationInterval"></label></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">RTI cleaning effectiveness</label>
+                        <div class="col-xs-8 nopad_l-r"><div id="RTICleaningEffectivenessSlider"></div></div>
+                        <div class="col-xs-4 text-left"><label id="RTICleaningEffectiveness"></label></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Calculation method</label>
+                        <select class="form-control" id="calcMethod">
+                            <option>Average value</option>
+                            <option>Best case</option>
+                            <option selected ="selected">Modal value</option>
+                            <option>Worst case</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="updatePerformanceModel">Update Performance Model</button>
+            <button type="button" class="btn btn-default btn-xs btn_cancel" data-dismiss="modal">Cancel, don't update</button>
+        </div>
+
+    </div>
+</div>
+@*</div>*@

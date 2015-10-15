@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTI.ModelingSystem.Core", "RTI.ModelingSystem.Core\RTI.ModelingSystem.Core.csproj", "{4F2C0C60-EB2C-4C2D-A320-C0822AFD5315}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTI.ModelingSystem.Infrastructure", "RTI.ModelingSystem.Infrastructure\RTI.ModelingSystem.Infrastructure.csproj", "{36106DBA-7F67-4F9D-8EDF-F19345A8699D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTI.ModelingSystem.Web", "RTI.ModelingSystem.Web\RTI.ModelingSystem.Web.csproj", "{5071D885-14D1-485E-BFE8-228C309944CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTI.ModelingSystem.Web.Tests", "RTI.ModelingSystem.Web.Tests\RTI.ModelingSystem.Web.Tests.csproj", "{81615770-0416-4DCC-9C9E-53C104E917F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTI.ModelingSystem.Interfaces", "RTI.ModelingSystem.Interfaces\RTI.ModelingSystem.Interfaces.csproj", "{C127089F-F2D8-439D-8D42-3BCC228CC3DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F2C0C60-EB2C-4C2D-A320-C0822AFD5315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F2C0C60-EB2C-4C2D-A320-C0822AFD5315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F2C0C60-EB2C-4C2D-A320-C0822AFD5315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F2C0C60-EB2C-4C2D-A320-C0822AFD5315}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36106DBA-7F67-4F9D-8EDF-F19345A8699D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36106DBA-7F67-4F9D-8EDF-F19345A8699D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36106DBA-7F67-4F9D-8EDF-F19345A8699D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36106DBA-7F67-4F9D-8EDF-F19345A8699D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5071D885-14D1-485E-BFE8-228C309944CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5071D885-14D1-485E-BFE8-228C309944CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5071D885-14D1-485E-BFE8-228C309944CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5071D885-14D1-485E-BFE8-228C309944CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81615770-0416-4DCC-9C9E-53C104E917F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81615770-0416-4DCC-9C9E-53C104E917F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81615770-0416-4DCC-9C9E-53C104E917F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81615770-0416-4DCC-9C9E-53C104E917F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C127089F-F2D8-439D-8D42-3BCC228CC3DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C127089F-F2D8-439D-8D42-3BCC228CC3DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C127089F-F2D8-439D-8D42-3BCC228CC3DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C127089F-F2D8-439D-8D42-3BCC228CC3DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

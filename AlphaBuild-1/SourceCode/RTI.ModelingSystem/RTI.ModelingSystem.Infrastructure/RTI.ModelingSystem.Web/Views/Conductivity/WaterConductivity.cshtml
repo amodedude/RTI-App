@@ -1,0 +1,284 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSummaryViewModel
+
+@{
+    ViewBag.Title = "Water Conductivity";
+}
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/highstock.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/modules/exporting.js"></script>
+<script src="~/Scripts/ConductivityCharts.js"></script>
+
+<div class="container" style="overflow:hidden;">
+    <!-- BREADCRUMB -->
+    <ol class="breadcrumb">
+        <li><a href="/ClientDatabase/Dashboard">Dashboard</a></li>
+        <li class="active">Water Conductivity</li>
+    </ol>
+    <!-- Customer info panel-->
+    <div class="row">
+        <!-- Customer info-->
+        <div class="col-xs-6">
+            @if (Model != null && Model.CustomerDetails != null)
+            {
+                <div class="custinfo_panel">
+                    <div class="cust_name">
+                        <div class="cust_name_trim" title="@Model.CustomerDetails.name">@Html.DisplayFor(model => model.CustomerDetails.name)</div>
+                    </div>
+                    <div class="cust_id">
+                        <span>(</span>@for (int i = 0; i < 12 - (Model.CustomerDetails.customerID).ToString().Length; i++)
+                        {
+                            if (i == 3 || i == 7)
+                            {
+                                <span>-</span>
+                            }
+                            else
+                            {
+                                <span>0</span>
+                            }
+
+                        }<span>@Html.DisplayFor(model => model.CustomerDetails.customerID)</span><span>)</span>
+                    </div>
+                    <div class="plant_name">@Html.DisplayFor(model => model.CustomerDetails.plant) Plant</div>
+                    <div class="cust_address">@Html.DisplayFor(model => model.CustomerDetails.city), @Html.DisplayFor(model => model.CustomerDetails.state)</div>
+                </div>
+            }
+
+        </div>
+
+        <!-- System summary-->
+        <div class="col-xs-6">
+
+            <div class="syssummary_panel">
+                <div class="syssummary_panel_heading">System summary</div>
+                @if (Model != null && Model.CustomerDetails != null && Model.WaterSourceOne != null)
+                {
+                    <div class="syssummary_panel_cont">
+                        <ul class="col-xs-6">
+                            <li>
+                                Train information <br>
+                                <span>
+                                    @if (Model.Trains[0].using_manifold == "NO")
+                                    {
+
+                                        @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - No Manifold</span>
+
+
+                                    }
+                                    else
+                                    {
+
+                                        @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - Manifold</span>
+
+
+                                    }
+                                </span>
+                            </li>
+                            <li><span>$@Html.DisplayFor(model => model.CustomerDetails.caustic_price) / lb</span> (Caustic)</li>
+                            <li><span>$@Html.DisplayFor(model => model.CustomerDetails.acid_price) / lb </span> (Acid)</li>
+                        </ul>
+                        <ul class="col-xs-6">
+                            <li>
+                                Water source(s)<br>
+                                <span>1: @Html.DisplayFor(model => model.WaterSourceOne.full_site_name)</span> <br>
+                                @if (Model != null && Model.WaterSourceTwo != null)
+                                {
+                                    <span>2: @Html.DisplayFor(model => model.WaterSourceTwo.full_site_name)</span>
+
+                                }
+
+                            </li>
+                            <li>
+                                Water demand<br>
+                                <span>@string.Format("{0:n0}", Model.CustomerDetails.demand) gal / mo</span>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Graph Panel-->
+    <div class="row">
+        <!-- Graphs Left-->
+        <div class="col-xs-8">
+            <h4>Water Conductivity</h4>
+            <div class="well graph_container">
+            @if (Model != null && Model.WaterSourceTwo != null)
+            {
+                <h5>
+                    @(Model.WaterSourceOne.full_site_name + " Conductivity")
+                </h5>
+                <div class="graph_panel" id="Conductivity_Source_1">
+                @*<img class="img-responsive" src="~/Content/images/Conductivity.png" width="700" height="346" alt="" />*@
+                </div>
+                <h5>
+                    @(Model.WaterSourceTwo.full_site_name + " Conductivity")
+                </h5>
+                    <div class="graph_panel" id="Conductivity_Source_2">
+                @*<img class="img-responsive" src="~/Content/images/Conductivity.png" width="700" height="346" alt="" />*@
+                </div>
+            }
+            else
+            {
+                <h5>
+                    @(Model.WaterSourceOne.full_site_name + " Conductivity")
+                </h5>
+            <div class="graph_panel" id="Conductivity_Source_1">
+                @*<img class="img-responsive" src="~/Content/images/Conductivity.png" width="700" height="346" alt="" />*@
+            </div>
+            }    
+                
+                <h5>Conductivity Forecast</h5>
+                <div class="graph_panel" id="Forecast_Source_1">
+                @*<img class="img-responsive" src="~/Content/images/img_graph_conductivityforecast.png" width="700" height="461" alt="" />*@
+                </div>
+            </div>
+        </div>
+        @Html.TextBoxFor(model => model.Source1Statistics.SourceId, new { @id = "Source1Id", @style = "display:none" })
+        @Html.TextBoxFor(model => model.Source2Statistics.SourceId, new { @id = "Source2Id", @style = "display:none" })
+        <!-- Graphs Right-->
+    <div class="col-xs-4 rightpanel">
+         @if (Model != null && Model.WaterSourceTwo != null)
+            {
+            
+            <div class="col-xs-12 table_title">Statistics</div>
+            <div class="col-xs-12 nopad_l-r statlist_title">
+                <div class="left">&nbsp;</div>
+                <div class="right">Source1</div>
+                <div class="right">Source2</div>
+            </div>
+
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Current Conductivity</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.CurrentConductivity)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.CurrentConductivity)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">% Above the mean</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.PercentAboveMean)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.PercentAboveMean)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Standard deviation</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.StandardDeviation)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.StandardDeviation)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Arithmetic mean</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.ArithmeticMean)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.ArithmeticMean)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Maximum Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.MaxConductivity)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.MaxConductivity)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Minimum Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.MinConductivity)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.MinConductivity)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Median Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.MedianValue)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.MedianValue)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Modal Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.ModalValue)</div>
+                <div class="right">@Html.DisplayFor(model => model.Source2Statistics.ModalValue)</div>
+                <div class="dotted"></div>
+            </div>
+            @*<div class="col-xs-12 nopad_l-r statlist">
+                    <div class="left">Highest 90 day avg</div>
+                    <div class="right">@Html.DisplayFor(model => model.Source1Statistics.CurrentConductivity)</div>
+                    <div class="right">@Html.DisplayFor(model => model.Source2Statistics.CurrentConductivity)</div>
+                    <div class="dotted"></div>
+                </div>*@
+
+
+            }
+            else
+            {
+            <div class="col-xs-12 table_title">Water Statistics</div>
+            <div class="col-xs-12 nopad_l-r statlist_title">
+                <div class="left">&nbsp;</div>
+                <div class="right">Source1</div>
+            </div>
+
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Current Conductivity</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.CurrentConductivity)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">% Above the mean</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.PercentAboveMean)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Standard deviation</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.StandardDeviation)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Arithmetic mean</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.ArithmeticMean)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Maximum Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.MaxConductivity)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Minimum Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.MinConductivity)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Median Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.MedianValue)</div>
+                <div class="dotted"></div>
+            </div>
+
+            <div class="col-xs-12 nopad_l-r statlist">
+                <div class="left">Modal Value</div>
+                <div class="right">@Html.DisplayFor(model => model.Source1Statistics.ModalValue)</div>
+                <div class="dotted"></div>
+            </div>
+
+            }
+        </div>
+        </div>
+    </div>
+
+
+@*<script src="~/Scripts/Highcharts-4.0.1/js/highstock.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/modules/exporting.js"></script>*@

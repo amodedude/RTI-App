@@ -1,0 +1,206 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSettings
+
+@{
+    ViewBag.Title = "SystemSettings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<script src="~/Scripts/jquery-2.1.4.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.3.js"></script>*@
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+        $('#secondWaterSource').change(function () {
+            if ($(this).is(':checked')) {
+                $('#waterSourceSlider').show();
+                $('#firstPercentage').show();
+                $('#secondPercentage').show();
+                $('#secondwsddl').show();
+                $("#waterSourceSlider").slider({
+                    range: "min",
+                    value: 50,
+                    min: 1,
+                    max: 99,
+                    slide: function (event, ui) {
+                        $("#firstPercentage").text(ui.value + "%");
+                        $("#secondPercentage").text((100 - ui.value) + "%");
+                    }
+                });
+                $("#firstPercentage").text($("#waterSourceSlider").slider("value") + "%");
+                $("#secondPercentage").text("50%");
+            }
+            else {
+                var r = confirm("Are you sure you want to remove?");
+                if (r == true) {
+                    $('#waterSourceSlider').hide();
+                    $('#firstPercentage').hide();
+                    $('#secondPercentage').hide();
+                    $('#secondwsddl').hide();
+                }
+                else {
+                    $('#secondWaterSource').prop("checked", true);
+                }
+            }
+        });
+
+        $("#updateSystem").click(function () {
+            var manifold = $('.manifold').val();
+            var causticPrice = $('#causticPrice').val();
+            var acidPrice = $('#acidPrice').val();
+            var waterDemand = $('#waterDemand').val();
+            var firstWaterSource = $('#firstWaterSource').val();
+            if ($('#secondWaterSource').is(':checked')) {
+                var firstPercentage = $('#firstPercentage').text().replace('%', '');
+                var secondPercentage = $('#secondPercentage').text().replace('%', '');
+                var secondWaterSource = $('#secondWaterSource').val();
+                var jsonData = { isManifold: manifold, acid_price: acidPrice, caustic_price: causticPrice, demand: waterDemand, firstWaterSource: firstWaterSource, secondWaterSource: secondWaterSource, firstWSPercentage: firstPercentage, secondWSPercentage: secondPercentage };
+            }
+            else
+            {
+                var jsonData = { isManifold: manifold, acid_price: acidPrice, caustic_price: causticPrice, demand: waterDemand, firstWaterSource: firstWaterSource, secondWaterSource: "", firstWSPercentage: "", secondWSPercentage: "" };
+            }
+            //var jsonData = { isManifold: manifold, acid_price: acidPrice, caustic_price: causticPrice, demand: waterDemand, firstWaterSource: firstWaterSource, secondWaterSource: secondWaterSource, firstWSPercentage: firstPercentage, secondWSPercentage: secondPercentage };
+            jsonData = JSON.stringify(jsonData);
+            $.ajax({
+                url: '@Url.Action("UpdateSystemSettings", "ClientDatabase")?settings=' + jsonData,
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (status) {
+                    alert("Success!!");
+                },
+                error: function (xhr) {
+                    window.location.href = "/ClientDatabase/Errorview";
+                }
+            });
+        });
+    });
+</script>
+
+<h2>SystemSettings</h2>
+@using (Html.BeginForm("UpdateSystemSettings", "ClientDatabase", FormMethod.Post))
+{
+    <body>
+        <div>
+            <table border="0" width="50%">
+                <tr>
+                    <td colspan="2" width="50%">
+                        <p>
+                            Do you have a Manifold System?
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%">
+                        <p>
+                            @Html.RadioButtonFor(m => Model.isManifold, "false", new { @class = "manifold" }) No
+                        </p>
+                    </td>
+                    <td width="50%">
+                        <p>
+                            @Html.RadioButtonFor(m => Model.isManifold, "true", new { @class = "manifold" }) Yes
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            Chemical prices
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            Caustic
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            Acid
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            $ @Html.TextBox("caustic_price", Model.caustic_price, new { id = "causticPrice" }) / lb
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            $ @Html.TextBox("acid_price", Model.acid_price, new { id = "acidPrice" }) / lb
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            Water source(s)
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            @Html.CheckBox("2nd source", false, new { id = "secondWaterSource" }) 2nd source
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @if (Model.firstWaterSource != null)
+                        {
+                            <p>
+                                @Html.DropDownListFor(model => model.firstWaterSource, Model.waterSources, Model.firstWaterSource, new { id = "firstWaterSource" })
+                                @*@Html.DropDownList("fisrtSourceDropdown", Model.waterSources, Model.firstWaterSource, new { id = "firstWaterSource" })*@
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                @Html.DropDownListFor(model => model.firstWaterSource, Model.waterSources, "--Select Water Source--", new { id = "firstWaterSource" })
+                                @*@Html.DropDownList("fisrtSourceDropdown", Model.waterSources, "--Select Water Source--", new { id = "firstWaterSource" })*@
+                            </p>
+                        }
+                    </td>
+                    <td>
+                        @if (Model.secondWaterSource != null)
+                        {
+                            <p style="display : none;" id="secondwsddl">
+                                @Html.DropDownListFor(model => model.secondWaterSource, Model.waterSources, Model.secondWaterSource, new { id = "secondWaterSource" })
+                                @*@Html.DropDownList("secondSourceDropdown", Model.waterSources, Model.secondWaterSource, new { id = "secondWaterSource" })*@
+                            </p>
+                        }
+                        else
+                        {
+                            <p style="display : none;" id="secondwsddl">
+                                @Html.DropDownListFor(model => model.secondWaterSource, Model.waterSources, "--Select Water Source--", new { id = "secondWaterSource" })
+                                @*@Html.DropDownList("secondSourceDropdown", Model.waterSources, "--Select Water Source--", new { id = "secondWaterSource" })*@
+                            </p>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="firstPercentage" hidden>a</label> <div id="waterSourceSlider" style="display : none;"></div> <label id="secondPercentage" hidden>b</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            Water demand (gal / mo)
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            @Html.TextBox("demand", Model.demand, new { id = "waterDemand" })
+                        </p>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="button" id="updateSystem" name="update" value="Update System" />&nbsp;&nbsp;
+
+            @Html.ActionLink("cancel, don't update", "", "")
+        </div>
+    </body>
+}

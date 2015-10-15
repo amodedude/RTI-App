@@ -1,0 +1,14 @@
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Infrastructure.dll.config
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Infrastructure.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Infrastructure.pdb
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Core.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Interfaces.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Core.pdb
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\RTI.ModelingSystem.Interfaces.pdb
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.xml
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\obj\Release\RTI.ModelingSystem.Infrastructure.csprojResolveAssemblyReference.cache
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\obj\Release\RTI.ModelingSystem.Infrastructure.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Infrastructure\obj\Release\RTI.ModelingSystem.Infrastructure.pdb

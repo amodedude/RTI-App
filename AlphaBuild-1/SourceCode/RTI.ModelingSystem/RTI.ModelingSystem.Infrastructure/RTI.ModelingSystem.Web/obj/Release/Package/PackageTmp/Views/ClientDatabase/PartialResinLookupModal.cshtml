@@ -1,0 +1,270 @@
+﻿@model RTI.ModelingSystem.Core.Models.ResinModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" id="resinLookupModal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnClose"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Resin lookup</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 textfilter" id="divProducts">
+                        @*@Html.TextBoxFor(m => m.BedInfo, new { @id = "bedInfo", @hidden = "hidden" })*@
+                        <ul id="ProductNamesUL">
+                            <li class="title">Filter by product name:</li>
+                            @if (Model.SelectedProduct == "All" || Model.SelectedProduct ==  "")
+                            {
+                            <li><a class="active" href="#">All</a></li>
+                            }
+                            else
+                            {
+                            <li><a href="#">All</a></li>
+                            }
+                            @foreach (var item in Model.ProductNamesList)
+                            {
+                                if (Model.SelectedProduct == item.ToString())
+                                {
+                            <li><a class="active" href="#">@item.ToString()</a></li>
+                                }
+                                else
+                                {
+                            <li><a href="#">@item.ToString()</a></li>
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="row resinfilter">
+                    <div class="col-xs-6">
+                        <div class="searchresult">
+                            @Html.Label(Model.ResinProductsList.Count.ToString(), new { id = "lblTotal" }) total
+                        </div>
+                        @*<div>
+                                    @Html.Label(Model.BedInfo.ToString())
+                                <input type="hidden" id="TutorName" name="TutorName" value="@Model.BedInfo" />
+
+                                <input type="hidden" value="@Model.BedInfo" id="ApplicationNumber" />
+                            </div>*@
+                        <div class="input-group">
+                            <input id="searchText" type="text" class="form-control" placeholder="Search" name="q">
+                            <div class="input-group-btn">
+                                <button id="btnSearch" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        @if (Model.ResinProductsList.Count == 0)
+                        {
+                            <div class="noproducts">There were no results found based on your filters. Try searching again.</div>
+                        }
+                        else
+                        {
+                            <div class="resinfilter_result" id="divResinModels">
+
+                                <ul id="idUL">
+                                    <!-- product model list Start-->
+                                    @foreach (var item in Model.ResinProductsList)
+                                    {
+                                        <li id="idLI">
+
+                                            @Html.TextBoxFor(modelItem => item.color, new { @id = "hdnBedType", @hidden = "hidden" })
+                                            <div class="row">
+                                                <div class="col-xs-8 resinSelect">
+                                                    <div class="pmodel_name"><a href="#">@Html.DisplayFor(modelItem => item.model_number) (@Html.DisplayFor(modelItem => item.physical_structure))</a> </div>
+                                                    <div class="pmodel_type">@Html.DisplayFor(modelItem => item.teir) </div>
+
+                                                </div>
+                                                <div class="col-xs-3 text-right nopad_l-r">
+                                                    <div class="pmodel_price"><span>@Html.DisplayFor(modelItem => item.price_per_cuft)</span></div>
+                                                    <div class="totalcap">Total Cap: </div>
+                                                </div>
+                                                <div class="col-xs-1 text-left">
+                                                    <div class="pmodel_comment"><a data-container="body" data-placement="bottom" data-toggle="popover" data-trigger="focus" data-content="@item.comments" href="#"></a></div>
+                                                    <div class="totalcap_value"><span>@Html.DisplayFor(modelItem => item.total_capacity)</span></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                    <!-- product model list End -->
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var prodname = '@Model.SelectedProduct';
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+    $(document).ready(function () {
+        $('input:text:first').focus();
+
+        $("#idUL > li .resinSelect").click(function () {
+            PopulateResinModelTrainSettings($(this).find("div.pmodel_name").text(), $(this).find("div.pmodel_type").text());
+        });
+
+        $('#btnSearch').click(function () {
+            FetchResinModels(prodname);
+        });
+
+        $('#searchText').keyup(function (e) {
+            FetchResinModels();
+        })
+
+        $('#btnClose').click(function () {
+
+        });
+
+        $("#ProductNamesUL li").click(function () {
+            if ($(this)[0].textContent != "Filter by product name:") {
+                if ($(this)[0].textContent == "All") {
+                    prodname = "";
+                }
+                else {
+                    prodname = $(this)[0].textContent;
+                }
+
+                FetchResinModels();
+            }
+        });
+    });
+
+    function PopulateResinModelTrainSettings(txtResinValue, tier) {
+        var txtResin = txtResinValue.split("SpaceReplace").join(" ");
+        var txtResin1 = txtResin.split('(');
+        var txtResin2 = txtResin1[0];        
+        if (txtResin2 != null && txtResin2.length > 0) {
+
+            if (bedInfoValue != null && bedInfoValue == "CatBed1") {
+                $('#txtResinProductModelCatBed1')[0].value = txtResin2;
+                $("#ResinModel0").val(txtResin2);
+            }
+            else if (bedInfoValue != null && bedInfoValue == "CatBed2") {
+                $('#txtResinProductModelCatBed2')[0].value = txtResin2;
+                $("#ResinModel2").val(txtResin2);
+            }
+            else if (bedInfoValue != null && bedInfoValue == "AnionBed1") {
+                $('#txtResinProductModelCatBed11')[0].value = txtResin2;
+                $("#ResinModel11").val(txtResin2);
+            }
+            else if (bedInfoValue != null && bedInfoValue == "AnionBed2") {
+                $('#txtResinProductModelCatBed3')[0].value = txtResin2;
+                $("#ResinModel3").val(txtResin2);
+            }
+
+        }
+
+        var displaySpan = tier.split("SpaceReplace").join(" ");//$(this).find("div.pmodel_type").text();
+        var displaySpan1 = displaySpan.split('(');
+        var displaySpan2 = displaySpan1[0];
+        var displaySpan3 = null;
+
+        if (displaySpan2 != null && displaySpan2.length > 0) {
+            displaySpan3 = displaySpan2 + '(' + txtResin2 + ')'
+        }
+
+        if (displaySpan3 != null && displaySpan3.length > 0) {
+
+            if (txtResin2 != null && txtResin2.length > 0) {
+
+                if (bedInfoValue != null && bedInfoValue == "CatBed1") {
+                    $("#ResignDetailsCatBed1").html(displaySpan3);
+                    $('#ResignDetailsCatBed1').show();
+                }
+                else if (bedInfoValue != null && bedInfoValue == "CatBed2") {
+                    $("#ResignDetailsCatBed2").html(displaySpan3);
+                    $('#ResignDetailsCatBed2').show();
+                }
+                else if (bedInfoValue != null && bedInfoValue == "AnionBed1") {
+                    $("#ResignDetailsCatBed11").html(displaySpan3);
+                    $('#ResignDetailsCatBed11').show();
+                }
+                else if (bedInfoValue != null && bedInfoValue == "AnionBed2") {
+                    $("#ResignDetailsCatBed3").html(displaySpan3);
+                    $('#ResignDetailsCatBed3').show();
+                }
+            }
+        }
+
+        $("#resinLookupModal").modal('hide');
+    }
+
+    function BuildHtml(data) {
+        if (data.ResinProductsList.length > 0) {
+            ul = $("<ul id='idUL'>");
+            for (var i = 0, l = data.ResinProductsList.length; i < l; ++i) {
+                var li = "<li id='idLI'>" +
+                            "<div class='row'>" +
+                                "<div class='col-xs-8 resinSelect'>" +
+                                    "<div class='pmodel_name' onclick=PopulateResinModelTrainSettings('" + data.ResinProductsList[i].group.split(" ").join("SpaceReplace") + "','" + data.ResinProductsList[i].teir.split(" ").join("SpaceReplace") + "')><a href='#' >" + data.ResinProductsList[i].model_number + " (" + data.ResinProductsList[i].physical_structure + ") </a> </div>" +
+                                    "<div class='pmodel_type'>" + data.ResinProductsList[i].teir + "</div>" +
+                                    "</div>" +
+                                    "<div class='col-xs-3 text-right nopad_l-r'>" +
+                                    "<div class='pmodel_price'><span>" + data.ResinProductsList[i].price_per_cuft + "</span></div>" +
+                                    "<div class='totalcap'>Total Cap: </div>" +
+                                    "</div>" +
+                                    "<div class='col-xs-1 text-left'>" +
+                                    //"<div class='pmodel_comment' data-role='main' class='ui-content'> <a href='#myPopup' data-rel='popup' class='ui-btn ui-btn-inline ui-corner-all'></a><div data-role='popup' id='myPopup'><p></p></div></div>" +
+                                    "<div class='pmodel_comment'><a data-rel='popup' data-container='body' data-placement='bottom' data-toggle='popover' data-trigger='focus' data-content='" + data.ResinProductsList[i].comments + "' href='#'></a></div>" +
+                                   "<div class='totalcap_value'><span>" + data.ResinProductsList[i].total_capacity + "</span></div>" +
+                              "</div>" +
+                              "</div>" +
+                             "</li>"
+                ul.append(li);
+            }
+            ul.append("</ul>");
+            $("#divResinModels").html(ul);
+        }
+        else {
+            var noproductsDiv = "<div class='noproducts'>There were no results found based on your filters. Try searching again.</div>"
+            $("#divResinModels").html(noproductsDiv);            
+        }
+        $("#lblTotal").text(data.ResinProductsList.length);
+    }
+
+    function FetchResinModels() {
+        var searchText = $("#searchText").val();
+        var product = prodname;
+        if (product == "") {
+            product = "All"
+        }
+        $('#divProducts').each(function () {
+            var phrase = '';
+            $(this).find('li').each(function () {                
+                if ($(this).text() == product) {
+                    $(this).find('a').addClass("active");
+                }
+                else {
+                    $(this).find('a').removeClass("active");
+                }
+            });
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '/ClientDatabase/ResinLookupSearchFilter',
+            data: { bedInfo: bedInfoValue, productName: prodname, searchText: searchText },
+            success: function (data) {
+                BuildHtml(data);
+            },
+            error: function (xhr) {
+                window.location.href = "/ClientDatabase/Errorview";
+            }
+
+        });
+    }
+</script>

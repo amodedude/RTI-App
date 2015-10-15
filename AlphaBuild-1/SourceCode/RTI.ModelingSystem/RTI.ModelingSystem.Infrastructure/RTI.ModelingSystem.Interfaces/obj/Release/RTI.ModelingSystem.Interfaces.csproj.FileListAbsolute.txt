@@ -1,0 +1,7 @@
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Interfaces.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Interfaces.pdb
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Core.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\bin\Release\RTI.ModelingSystem.Core.pdb
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\obj\Release\RTI.ModelingSystem.Interfaces.csprojResolveAssemblyReference.cache
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\obj\Release\RTI.ModelingSystem.Interfaces.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Interfaces\obj\Release\RTI.ModelingSystem.Interfaces.pdb

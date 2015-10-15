@@ -1,0 +1,119 @@
+﻿@model RTI.ModelingSystem.Core.Models.SystemSummaryViewModel
+<!-- Customer info-->
+<div class="col-xs-6">
+    @if (Model != null && Model.CustomerDetails != null)
+    {
+        <div class="custinfo_panel">
+            <div class="cust_name">
+                <div class="cust_name_trim" title="@Model.CustomerDetails.name">@Html.DisplayFor(model => model.CustomerDetails.name)</div><a href="#" id="GetCustomerDetails" data-toggle="modal" data-target="#changeCustomer">Change / Edit</a>
+            </div>
+            <div class="cust_id">
+                <span>(</span>@for (int i = 0; i < 12 - (Model.CustomerDetails.customerID).ToString().Length; i++)
+                {
+                    if (i == 3 || i == 7)
+                    {
+                        <span>-</span>
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+
+                }<span>@Html.DisplayFor(model => model.CustomerDetails.customerID)</span><span>)</span>
+            </div>
+            <div class="plant_name">@Html.DisplayFor(model => model.CustomerDetails.plant) Plant</div>
+            <div class="cust_address">@Html.DisplayFor(model => model.CustomerDetails.city), @Html.DisplayFor(model => model.CustomerDetails.state)</div>
+        </div>
+    }
+    else
+    {
+        <div class="custinfo_panel">
+            <p class="cust_name">No Customer Information  <a href="#" id="GetCustomerDetails" data-toggle="modal" data-target="#changeCustomer">Change / Edit</a></p>
+            <p class="plant_name">You have no customer selected...<a href="#" id="GetCustomerDetails" data-toggle="modal" data-target="#changeCustomer">Update Now!</a></p>
+        </div>
+
+    }
+</div>
+
+<!-- System summary-->
+<div class="col-xs-6">
+
+    <div class="syssummary_panel">
+        @if (Model != null && Model.CustomerDetails != null)
+        {
+            <div class="btn_sysconfig"><a href="#" id="GetSystemConfig" class=""><span class="glyphicon glyphicon-menu-hamburger"></span> System Config</a></div>
+        }
+        else
+        {
+            <div class="btn_sysconfig"><a href="#" id="GetSystemConfig" class="disabled"><span class="glyphicon glyphicon-menu-hamburger"></span> System Config</a></div>
+        }
+        <div class="syssummary_panel_heading">System summary</div>
+        @if (Model != null && Model.CustomerDetails != null && Model.WaterSourceOne != null)
+        {
+            <div class="syssummary_panel_cont">
+                <ul class="col-xs-6">
+                    <li>
+                        Train information <br>
+                        <span>
+                            @if (Model.Trains[0].using_manifold == "NO")
+                            {
+
+                                @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - No Manifold</span>
+
+
+                            }
+                            else
+                            {
+
+                                @Html.DisplayFor(model => model.CustomerDetails.num_trains) <span>trains - Manifold</span>
+
+
+                            }
+                        </span>
+                    </li>
+                    <li><span>$@Html.DisplayFor(model => model.CustomerDetails.caustic_price) / lb</span> (Caustic)</li>
+                    <li><span>$@Html.DisplayFor(model => model.CustomerDetails.acid_price) / lb </span> (Acid)</li>
+                </ul>
+                <ul class="col-xs-6">
+                    <li>
+                        Water source(s)<br>
+                        <span>1: @Html.DisplayFor(model => model.WaterSourceOne.full_site_name)</span> <br>
+                        @if (Model != null && Model.WaterSourceTwo != null)
+                        {
+                            <span>2: @Html.DisplayFor(model => model.WaterSourceTwo.full_site_name)</span>
+
+                        }
+
+                    </li>
+                    <li>
+                        Water demand<br>
+                        <span>@Html.DisplayFor(model => model.CustomerDetails.demand) ga / mo</span>
+                    </li>
+                </ul>
+            </div>
+        }
+
+        else
+        {
+            if (Model != null && Model.CustomerDetails != null)
+            {
+                <div class="syssummary_panel_cont">
+                    <p class="plant_name">You have no summary data...<a href="#" id="GetSystemConfig" class="">Update Now!</a></p>
+
+                </div>
+            }
+            else
+            {
+                <div class="syssummary_panel_cont">
+                    @*<p class="plant_name">You have no summary data...<span style="color:darkcyan">Update Now!</span></p>*@
+                    <p class="plant_name">You have no summary data...</p>
+
+
+                </div>
+            }
+        }
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+

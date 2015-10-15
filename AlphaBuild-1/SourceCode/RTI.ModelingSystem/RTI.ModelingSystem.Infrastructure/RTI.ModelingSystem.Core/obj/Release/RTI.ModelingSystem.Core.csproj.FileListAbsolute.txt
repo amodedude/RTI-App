@@ -1,0 +1,12 @@
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\RTI.ModelingSystem.Core.dll.config
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\RTI.ModelingSystem.Core.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\RTI.ModelingSystem.Core.pdb
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\EntityFramework.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\MySql.Data.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\MySql.Data.Entity.EF6.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\EntityFramework.xml
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\obj\Release\RTI.ModelingSystem.Core.csprojResolveAssemblyReference.cache
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\obj\Release\RTI.ModelingSystem.Core.dll
+C:\Users\John\Desktop\RTI-Web-Applicaotin\UAT-Release-5-SourceCode\RTI.ModelingSystem.Core\obj\Release\RTI.ModelingSystem.Core.pdb

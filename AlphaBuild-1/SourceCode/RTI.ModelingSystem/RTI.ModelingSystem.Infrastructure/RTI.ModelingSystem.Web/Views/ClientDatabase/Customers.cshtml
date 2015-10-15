@@ -1,0 +1,68 @@
+﻿@model RTI.ModelingSystem.Core.DBModels.customer
+@{
+    ViewBag.Title = "RTI Database";
+}
+<script src="~/Scripts/jquery-2.1.4.js"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+        $("#CustomerDetails").click(function () {
+            var id = $('#ddlClients').val();
+            var url = "/ClientDataBase/CustomerData?customerId=" + id;
+            window.location.href = url;
+        });
+    });
+</script>
+
+<h2>Client Database</h2>
+<body>
+    <div>
+        <table border="0">
+            <tr>
+                <td>
+                    @*@using (Html.BeginForm("Index", "ClientDatabase", FormMethod.Post))
+                        {*@
+                    <fieldset>
+                        <legend>Client Search</legend>
+                        <table border="0">
+                            <tr>
+                                <td>@Html.Label("Client Name:")</td>
+                                <td colspan="3">@Html.Label("Client Name")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    @Html.DropDownList("ClientsDropdown", Model.customerList, "Select Client", new { id = "ddlClients" })
+
+                                    <input type="button" id="CustomerDetails" name="Customer Details" value="View" />                                   
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    @*}*@
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+
+
